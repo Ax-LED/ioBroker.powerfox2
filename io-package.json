@@ -1,0 +1,118 @@
+{
+	"common": {
+		"name": "powerfox2",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "powerfox2",
+		"titleLang": {
+			"en": "powerfox2",
+			"de": "powerfox2",
+			"ru": "powerfox2",
+			"pt": "powerfox2",
+			"nl": "powerfox2",
+			"fr": "powerfox2",
+			"it": "powerfox2",
+			"es": "powerfox2",
+			"pl": "lisek2",
+			"zh-cn": "电狐2"
+		},
+		"desc": {
+			"en": "powerfox2 provides energy data",
+      		"de": "powerfox2 liefert Energiedaten",
+			"ru": "powerfox2 предоставляет данные об энергии",
+			"pt": "powerfox2 fornece dados de energia",
+			"nl": "powerfox2 levert energiegegevens",
+			"fr": "powerfox2 fournit des données énergétiques",
+			"it": "powerfox2 fornisce dati sull'energia",
+			"es": "powerfox2 proporciona datos de energía",
+			"pl": "powerfox2 dostarcza dane dotyczące energii",
+			"zh-cn": "powerfox提供能源数据"
+		},
+		"authors": [
+			"Ax-LED <alex_draxler@yahoo.de>"
+		],
+		"keywords": [
+			"powerfox",
+			"poweropti",
+			"energiedaten",
+			"energy data",
+			"stromverbrauch",
+			"strommessung"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "powerfox2.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/ax-led/ioBroker.powerfox2/main/admin/powerfox2.png",
+		"readme": "https://github.com/ax-led/ioBroker.powerfox2/blob/main/README.md",
+		"loglevel": "info",
+		"mode": "schedule",
+		"schedule": "* * * * *",
+		"type": "energy",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"materialize": true,
+		"materializeTab": true,
+		"adminTab": {
+			"singleton": true,
+			"name": {
+				"en": "powerfox2",
+				"de": "powerfox2",
+				"ru": "powerfox2",
+				"pt": "powerfox2",
+				"nl": "powerfox2",
+				"fr": "powerfox2",
+				"it": "powerfox2",
+				"es": "powerfox2",
+				"pl": "lisek2",
+				"zh-cn": "电狐2"
+			},
+			"link": "",
+			"fa-icon": "info"
+		},
+		"supportCustoms": true,
+		"dependencies": [
+			{
+				"js-controller": ">=2.0.0"
+			}
+		]
+	},
+	"encryptedNative": [
+		"password"
+	],
+	"protectedNative": [
+		"password"
+	],
+	"native": {
+		"username": "",
+		"password": "",
+		"devices": []
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+		  "_id": "devices",
+		  "type": "channel",
+		  "common": {
+			"role": "state",
+			"name": "devices"
+		  },
+		  "native": {}
+		}
+	]
+}

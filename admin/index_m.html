@@ -1,0 +1,315 @@
+<html>
+<head>
+    <!-- Load ioBroker scripts and styles-->
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+
+    <!-- Load our own files -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="words.js"></script>
+
+    <script type="text/javascript">
+        var secret = '';
+
+        // the function loadSettings has to exist ...
+        function load(settings, onChange) {
+            if (systemConfig) {
+                secret = (systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9';
+                loadHelper(settings, onChange);
+                return;
+            }
+            socket.emit('getObject', 'system.config', function (err, obj) {
+                secret = (obj.native ? obj.native.secret : '') || '5Cd6dDqzq8bBbKJ9';
+                loadHelper(settings, onChange);
+            });
+        }
+        // This will be called by the admin adapter when the settings page loads
+        function loadHelper(settings, onChange) {
+            if (!settings) return;
+
+            if (settings.password && (typeof supportsFeature !== 'function' || !supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
+                settings.password = decrypt(secret, settings.password);
+            }
+
+            $('.value').each(function () {
+                var $key = $(this);
+                var id = $key.attr('id');
+                if ($key.attr('type') === 'checkbox') {
+                    // do not call onChange direct, because onChange could expect some arguments
+                    $key.prop('checked', settings[id])
+                        .on('change', () => onChange());
+                } else {
+                    // do not call onChange direct, because onChange could expect some arguments
+                    $key.val(settings[id])
+                        .on('change', () => onChange())
+                        .on('keyup', () => onChange());
+                }
+            });
+
+            //read devices from settings and show in table
+            let countDevices = settings.devices.length;
+            if (countDevices > 0) {
+                for (let i = 0; i < countDevices; i++) {
+                    addDeviceRow(onChange, settings.devices[i].name, settings.devices[i].aws, settings.devices[i].active);
+                }
+            }
+
+            function checkButtonState(){
+                var email = $("#email").val().trim(),password=$("#password").val().trim();
+                if(email.length && password.length && email.match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g)){
+                    $(".btn-update-device-list").removeClass("disabled");
+                    $(".btn-update-device-list").addClass("active");
+                    clickButtonAction();
+                } else {
+                    $(".btn-update-device-list").addClass("disabled");
+                    $(".btn-update-device-list").removeClass("active");
+                    clickButtonAction();
+                }
+            }
+
+            function clickButtonAction(){
+                $(".btn-update-device-list").unbind();
+                $(".btn-update-device-list.active").on("click", function(){
+                    $(".update-device-list-state").show();
+                    var email = $("#email").val().trim(),password=$("#password").val().trim();
+                    $.ajax({
+                        url: 'https://backend.powerfox.energy/api/2.0/my/all/devices',
+                        type: 'GET',
+                        dataType: 'json',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader ("Authorization", "Basic " + btoa(email + ":" + password));
+                            $(".update-device-list-state .material-icons").removeClass("success").removeClass("error").addClass("sync").text("sync");
+                        },
+                        success: function(data) {
+                            if(data.hasOwnProperty("message")){
+                                $(".update-device-list-state .material-icons").removeClass("success").removeClass("sync").addClass("error").text("cancel");
+                                $(".update-device-list-message").show();
+                                $(".update-device-list-message span").text(data.message);
+                            } else {
+                                $(".update-device-list-state .material-icons").removeClass("error").removeClass("sync").addClass("success").text("check_circle");
+                                $(".update-device-list-message").hide();
+                                $(".update-device-list-message span").text();
+
+                                // add each device
+                                $.each(data, function(index, row){
+                                    addDeviceRow(onChange, row.DeviceId, row.AccountAssociatedSince, false);
+                                    findDeviceInRows(row.DeviceId);
+                                });
+
+                                // delete not returned devices
+                                $("#devices > tr:not(.found)").remove();
+
+                                correctDeviceIndex();
+
+                                M && M.updateTextFields();
+                                onChange();
+                            }
+                        },
+                        error: function(request,error) {
+                            if(request.hasOwnProperty("status") && request.status == 401){
+                                $(".update-device-list-state .material-icons").removeClass("success").removeClass("sync").addClass("error").text("cancel");
+                                $(".update-device-list-message").show();
+                                $(".update-device-list-message span").text(translateWord("wrong credentials"));
+                            } else {
+                                $(".update-device-list-state .material-icons").removeClass("success").removeClass("sync").addClass("error").text("sync_problem");
+                                $(".update-device-list-message").show();
+                                $(".update-device-list-message span").text(translateWord("error occurred"));
+                            }
+                        }
+                    });
+                });
+            }
+
+            checkButtonState();
+
+            //Add new row to table for device
+            function addDeviceRow(onChange, name, aws, active){
+                if(findDeviceInRows(name)) return;
+
+                let countRows = $('#devices > tr').length;
+                let newIndex = countRows + 1;
+
+                let isChecked = (active)?' checked="checked"':"";
+
+                let dateString = "";
+                // try { let dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().replace(/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})T([0-9]{2})\:([0-9]{2})\:([0-9]{2})[^Z]+Z$/, "$3.$2.$1 $4:$5:$6"); } catch(e){}
+                // try { let dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().replace(/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})T([0-9]{2})\:([0-9]{2})\:([0-9]{2})[^Z]+Z$/, "$3.$2.$1"); } catch(e){}
+                try { dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().split('T')[0]; } catch(e){}
+
+                let newRow = '<tr><td><p>' + newIndex + '</p></td><td>' + name + '</td><td data-aws="' + aws + '">' + dateString + '</td><td><input type="checkbox" class="value filled-in is-active"' + isChecked + '><span></span></td></tr>';
+
+                $('#devices').append(newRow);
+
+                $('#devices > tr').eq(countRows).find('td').eq(3).find('input').on('change', () => onChange()).on('keyup', () => onChange());
+
+                $("#devices").parent("table").find('input[type="checkbox"]+span').off('click').on('click', function () {
+                    var $input = $(this).prev();
+                    if(!$input.prop('disabled')){
+                        $input.prop('checked', !$input.prop('checked')).trigger('change');
+                    }
+                    onChange();
+                });
+
+                M && M.updateTextFields();
+                onChange();
+            }
+
+            //find device by name
+            function findDeviceInRows(name){
+                var ret = false;
+                $('#devices > tr').each(function () {
+                    if(!ret && name.toLowerCase().trim() == $("td",$(this)).eq(1).text().toLowerCase().trim()){
+                        $(this).addClass("found");
+                        ret = true;
+                    }
+                });
+                return ret;
+            }
+
+            //give table rows new index number
+            function correctDeviceIndex(){
+                let count = $('#devices > tr').length;
+                for (let i = 0; i < count; i++) {
+                    let newIndex = i + 1;
+                    $('#devices > tr').eq(i).find('p').replaceWith('<p>' + newIndex + '</p>');
+                }
+
+                M && M.updateTextFields();
+                onChange();
+            }
+
+            onChange(false);
+            // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
+            if (M) M.updateTextFields();
+
+        }
+
+        // This will be called by the admin adapter when the user presses the save button
+        function save(callback) {
+            // example: select elements with class=value and build settings object
+            var obj = {};
+            $('.value').each(function () {
+                var $this = $(this);
+                if ($this.attr('type') === 'checkbox') {
+                    obj[$this.attr('id')] = $this.prop('checked');
+                } else {
+                    obj[$this.attr('id')] = $this.val();
+                }
+            });
+            //save devices list
+            let countDevices = $('#devices > tr').length;
+            let arrDevices = [];
+            if (countDevices > 0) {
+                for(let i = 0; i < countDevices; i++){
+                    let name = $('#devices > tr').eq(i).find('td').eq(1).text();
+                    let aws = $('#devices > tr').eq(i).find('td').eq(2).data("aws");
+                    let active  = ($('#devices > tr').eq(i).find('td').eq(3).find('input:checked').length > 0);
+                    let json = {name: name, aws: aws, active: active};
+                    arrDevices.push(json);
+                }
+            } else if (!countDevices) {
+                let json = {name: '', aws: '', active: ''};
+                arrDevices.push(json);
+            }
+
+            if (obj.password && (typeof supportsFeature !== 'function' || !supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
+                obj.password = encrypt(secret, obj.password);
+            }
+
+            obj['devices'] = arrDevices;
+
+            callback(obj);
+        }
+    </script>
+
+</head>
+<body>
+    <div class="m adapter-container">
+        <div class="row">
+            <!-- Tabs navigation -->
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s2">
+                        <a href="#tab-options" class="translate" data-lang="Options">Options</a>
+                    </li>
+                    <li class="tab col s2">
+                        <a href="#tab-devices" class="translate" data-lang="Devices">Devices</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab options -->
+            <div id="tab-options" class="col s12 page">
+                <div class="row">
+                    <div class="col s6">
+                        <img src="powerfox2.png" class="logo">
+                        <div class="preloader-background" style="display: none;">
+                            <div class="preloader-wrapper active">
+                                <div class="spinner-layer spinner-blue-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input class="value autocomplete" id="email" type="text" autocomplete="off">
+                        <label class="translate active">email</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input class="value autocomplete" id="password" type="password" autocomplete="off">
+                        <label class="translate active">password</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab devices -->
+            <div id="tab-devices" class="col s12 page">
+                <div class="row" style="padding-bottom: 0">
+                    <div class="input-field col s12">
+                        <a class="waves-effect waves-light btn btn-update-device-list" id="addDevice">
+                            <i class="material-icons left">cast</i><span class="translate">update device list</span>
+                        </a>
+                        <span class="update-device-list-state" style="display: none;"><i class="material-icons small">check_circle</i></span>
+                    </div>
+                    <div class="input-field col s12 update-device-list-message" style="display: none;">
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="table-values-div" style="height: calc(100% - 90px); overflow: auto">
+                    <table class="highlight">
+                        <thead>
+                        <tr>
+                            <th class="translate" id="index"></th>
+                            <th class="translate" id="deviceName">device name</th>
+                            <th class="translate" id="deviceAWS">associated since</th>
+                            <th class="translate" id="deviceActive">active</th>
+                        </tr>
+                        </thead>
+                        <tbody id="devices">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
