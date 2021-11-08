@@ -44,6 +44,15 @@ class Powerfox2 extends utils.Adapter {
 		this.log.debug('Email: ' + this.config.email);
 
 		//AxlED
+		/*
+		if (adapter.config.password && (!adapter.supportsFeature || !adapter.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
+			adapter.config.password = tools.decrypt((systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9', adapter.config.password);
+		}
+		*/
+		if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
+			this.config.password = tools.decrypt((systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9', this.config.password);
+		}
+
 		if(/[\x00-\x08\x0E-\x1F\x80-\xFF]/.test(this.config.password)){
 			this.log.info('Falsches Passwort: Bitte Passwort in den Instanz Einstellungen erneut eingeben.');
 			//killAdapter();
