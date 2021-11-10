@@ -7,7 +7,8 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
-const request = require('request');
+//const request = require('request');
+const axios = require('axios').default;
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -72,6 +73,109 @@ class Powerfox2 extends utils.Adapter {
                 this.log.debug('Gerät AWS:' + device.aws);
 				this.log.debug('Geräte Url:' + curDataUrl);
 				
+				/*Axled axios
+				axios.get('https://api.github.com/user', {
+  					headers: {
+    					'Authorization': `token ${access_token}`
+  					}
+				})
+				.then((res) => {
+					console.log(res.data)
+				})
+				.catch((error) => {
+					console.error(error)
+				})
+				*/
+				//Axled axios
+
+				
+				//Axled axios2
+				await axios({
+					method: 'get',
+					url: curDataUrl, 
+					headers: { 
+						'Authorization': auth
+					} 
+				})
+				.then(async (result) => {
+					//console.log(result.data)
+					this.log.info('test axios status' + JSON.stringify(result.status))
+					this.log.info('test axios' + JSON.stringify(result.data))
+					
+					
+					if (result.status === 200) {
+						//let data = JSON.parse(result.data);
+						let data = result.data;
+						this.log.debug('powerfox2 received data: ' + JSON.stringify(data));
+						//this.log.debug('powerfox2 received data: ' + JSON.stringify(result.data));
+						
+						//{
+						//"Outdated":false,
+						//"Watt":250.0,
+						//"Timestamp":1636062444,
+						//"A_Plus":217153.0,
+						//"A_Minus":48676.0
+						//}
+						var consumption = 0, feedIn = 0;
+
+						if(data.Watt < 0){
+							feedIn = (data.Watt * -1);
+						} else {
+							consumption = data.Watt;
+						}
+						this.log.debug('feedIn: ' + feedIn);
+						this.log.debug('consumption: ' + consumption);
+
+						//Test function fsetObjectNotExistsAsync
+						await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'current power (W)', 'number', 'value', 'W', false, false);
+						this.subscribeStates(path + '.currentPower');
+						await this.setStateAsync(path + '.currentPower', data.Watt, true);
+
+						await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'current power consumption (W)', 'number', 'value', 'W', false, false);
+						this.subscribeStates(path + '.currentPowerConsumption');
+						await this.setStateAsync(path + '.currentPowerConsumption', consumption, true);
+
+						await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'current feed in (W)', 'number', 'value', 'W', false, false);
+						this.subscribeStates(path + '.currentFeedIn');
+						await this.setStateAsync(path + '.currentFeedIn', feedIn, true);
+
+						await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumption meter reading (KWh)', 'number', 'value', 'kWh', false, false);
+						this.subscribeStates(path + '.consumptionMeterReadingKWh');
+						await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus/1000), true);
+
+						await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingWh', 'state', 'consumption meter reading (Wh)', 'number', 'value', 'Wh', false, false);
+						this.subscribeStates(path + '.consumptionMeterReadingWh');
+						await this.setStateAsync(path + '.consumptionMeterReadingWh', data.A_Plus, true);
+
+						await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feed in meter reading (KWh)', 'number', 'value', 'kWh', false, false);
+						this.subscribeStates(path + '.feedInMeterReadingKWh');
+						await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus/1000), true);
+
+						await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingWh', 'state', 'feed in meter reading (Wh)', 'number', 'value', 'Wh', false, false);
+						this.subscribeStates(path + '.feedInMeterReadingWh');
+						await this.setStateAsync(path + '.feedInMeterReadingWh', data.A_Minus, true);
+
+						await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
+						this.subscribeStates(path + '.timestamp');
+						let timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
+						await this.setStateAsync(path + '.timestamp', timestamp, true);
+
+						await this.fsetObjectNotExistsAsync(path + '.type', 'state', 'device type', 'string', 'text', '', false, false);
+						this.subscribeStates(path + '.type');
+						await this.setStateAsync(path + '.type', 'POWER', true);
+					}
+					
+				})
+				.catch(async (error) => {
+					//console.error(error)
+					//this.log.info('test axios error' + error);
+					//this.log.error(JSON.stringify(error))
+					this.log.error('test axios error ' + error);
+				})
+				//Axled axios2
+
+				//Axled request
+				/*
 				request({
 					method: 'GET',
 					url: curDataUrl,
@@ -82,15 +186,15 @@ class Powerfox2 extends utils.Adapter {
 					if (!error && response.statusCode === 200) {
 						let data = JSON.parse(body);
 						this.log.debug('powerfox2 received data: ' + JSON.stringify(data));
-						/*
-						{
-						"Outdated":false,
-						"Watt":250.0,
-						"Timestamp":1636062444,
-						"A_Plus":217153.0,
-						"A_Minus":48676.0
-						}
-						*/
+						
+						//{
+						//"Outdated":false,
+						//"Watt":250.0,
+						//"Timestamp":1636062444,
+						//"A_Plus":217153.0,
+						//"A_Minus":48676.0
+						//}
+
 						var consumption = 0, feedIn = 0;
 
 						if(data.Watt < 0){
@@ -140,6 +244,8 @@ class Powerfox2 extends utils.Adapter {
 						await this.setStateAsync(path + '.type', 'POWER', true);
 					}
 				});
+				*/
+				//Axled request
 
 			}
 		}//Ende for loop
