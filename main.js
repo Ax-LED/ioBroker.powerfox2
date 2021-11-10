@@ -37,7 +37,7 @@ class Powerfox2 extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.debug('Instanz powerfox2 gestartet.')
+		this.log.debug('Instanz powerfox2 gestartet.');
 		this.log.debug('Email: ' + this.config.email);
 
 		if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
@@ -99,8 +99,8 @@ class Powerfox2 extends utils.Adapter {
 				})
 				.then(async (result) => {
 					//console.log(result.data)
-					this.log.info('test axios status' + JSON.stringify(result.status))
-					this.log.info('test axios' + JSON.stringify(result.data))
+					this.log.info('test axios status' + JSON.stringify(result.status));
+					this.log.info('test axios' + JSON.stringify(result.data));
 					
 					
 					if (result.status === 200) {
@@ -127,33 +127,33 @@ class Powerfox2 extends utils.Adapter {
 						this.log.debug('consumption: ' + consumption);
 
 						//Test function fsetObjectNotExistsAsync
-						await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'current power (W)', 'number', 'value', 'W', false, false);
+						await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'current power', 'number', 'value', 'W', false, false);
 						this.subscribeStates(path + '.currentPower');
 						await this.setStateAsync(path + '.currentPower', data.Watt, true);
 
-						await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'current power consumption (W)', 'number', 'value', 'W', false, false);
+						await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'current power consumption', 'number', 'value', 'W', false, false);
 						this.subscribeStates(path + '.currentPowerConsumption');
 						await this.setStateAsync(path + '.currentPowerConsumption', consumption, true);
 
-						await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'current feed in (W)', 'number', 'value', 'W', false, false);
+						await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'current feed in', 'number', 'value', 'W', false, false);
 						this.subscribeStates(path + '.currentFeedIn');
 						await this.setStateAsync(path + '.currentFeedIn', feedIn, true);
 
-						await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumption meter reading (KWh)', 'number', 'value', 'kWh', false, false);
+						await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumption meter reading', 'number', 'value', 'kWh', false, false);
 						this.subscribeStates(path + '.consumptionMeterReadingKWh');
 						await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus/1000), true);
 
-						await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingWh', 'state', 'consumption meter reading (Wh)', 'number', 'value', 'Wh', false, false);
-						this.subscribeStates(path + '.consumptionMeterReadingWh');
-						await this.setStateAsync(path + '.consumptionMeterReadingWh', data.A_Plus, true);
+						//await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingWh', 'state', 'consumption meter reading', 'number', 'value', 'Wh', false, false);
+						//this.subscribeStates(path + '.consumptionMeterReadingWh');
+						//await this.setStateAsync(path + '.consumptionMeterReadingWh', data.A_Plus, true);
 
-						await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feed in meter reading (KWh)', 'number', 'value', 'kWh', false, false);
+						await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feed in meter reading', 'number', 'value', 'kWh', false, false);
 						this.subscribeStates(path + '.feedInMeterReadingKWh');
 						await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus/1000), true);
 
-						await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingWh', 'state', 'feed in meter reading (Wh)', 'number', 'value', 'Wh', false, false);
-						this.subscribeStates(path + '.feedInMeterReadingWh');
-						await this.setStateAsync(path + '.feedInMeterReadingWh', data.A_Minus, true);
+						//await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingWh', 'state', 'feed in meter reading', 'number', 'value', 'Wh', false, false);
+						//this.subscribeStates(path + '.feedInMeterReadingWh');
+						//await this.setStateAsync(path + '.feedInMeterReadingWh', data.A_Minus, true);
 
 						await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
 						this.subscribeStates(path + '.timestamp');
@@ -171,7 +171,7 @@ class Powerfox2 extends utils.Adapter {
 					//this.log.info('test axios error' + error);
 					//this.log.error(JSON.stringify(error))
 					this.log.error('test axios error ' + error);
-				})
+				});
 				//Axled axios2
 
 				//Axled request
