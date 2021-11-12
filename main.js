@@ -56,7 +56,7 @@ class Powerfox2 extends utils.Adapter {
 			this.log.info('Fehler bei den Powerfox Geräten: Bitte Geräte in den Instanz Einstellungen prüfen!');
 		}
 		
-		// create basic auth string
+		// create basic auth string x
 		let auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
 		let dataUrl = "https://backend.powerfox.energy/api/2.0/my/{device}/current";
 
