@@ -7,7 +7,6 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
-//const request = require('request');
 const axios = require('axios').default;
 
 // Load your modules here, e.g.:
@@ -68,27 +67,11 @@ class Powerfox2 extends utils.Adapter {
 				let curDataUrl = dataUrl.replace(/{device}/, device.name);
 				let path = 'devices.'+createVarName(device.name);
 
-				this.log.debug('Gerätename:' + device.name);
-				this.log.debug('Gerät aktiv:' + device.active);
-				this.log.debug('Gerät AWS:' + device.aws);
-				this.log.debug('Geräte Url:' + curDataUrl);
+				this.log.debug('device name:' + device.name);
+				this.log.debug('device active:' + device.active);
+				this.log.debug('device aws:' + device.aws);
+				this.log.debug('device url:' + curDataUrl);
 
-				/*Axled axios
-				axios.get('https://api.github.com/user', {
-  					headers: {
-    					'Authorization': `token ${access_token}`
-  					}
-				})
-				.then((res) => {
-					console.log(res.data)
-				})
-				.catch((error) => {
-					console.error(error)
-				})
-				*/
-				//Axled axios
-
-				//Axled axios2
 				await axios({
 					method: 'get',
 					url: curDataUrl,
@@ -97,16 +80,12 @@ class Powerfox2 extends utils.Adapter {
 					}
 				})
 					.then(async (result) => {
-					//console.log(result.data)
-						this.log.info('test axios status' + JSON.stringify(result.status));
-						this.log.info('test axios' + JSON.stringify(result.data));
+						this.log.debug('powerfox2 result status:' + JSON.stringify(result.status));
+						this.log.debug('powerfox2 result data:' + JSON.stringify(result.data));
 
 						if (result.status === 200) {
-						//let data = JSON.parse(result.data);
 							let data = result.data;
 							this.log.debug('powerfox2 received data: ' + JSON.stringify(data));
-							//this.log.debug('powerfox2 received data: ' + JSON.stringify(result.data));
-
 							//{
 							//"Outdated":false,
 							//"Watt":250.0,
@@ -124,7 +103,7 @@ class Powerfox2 extends utils.Adapter {
 							this.log.debug('feedIn: ' + feedIn);
 							this.log.debug('consumption: ' + consumption);
 
-							//Test function fsetObjectNotExistsAsync
+							//function fsetObjectNotExistsAsync
 							await this.fsetObjectNotExistsAsync(path + '.deviceType', 'state', 'deviceType', 'string', 'text', '', false, false);
 							this.subscribeStates(path + '.deviceType');
 							await this.setStateAsync(path + '.deviceType', 'POWER', true);
@@ -171,7 +150,7 @@ class Powerfox2 extends utils.Adapter {
 						this.log.error('powerfox2 error: ' + error);
 					});
 			}
-		}//Ende for loop
+		}//End for loop
 
 		this.killTimeout = setTimeout(this.stop.bind(this), 15 * 1000); // 15 Seconds
 	}
