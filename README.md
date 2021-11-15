@@ -21,6 +21,7 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* (Ax-LED) minor changes
 
 ### 0.0.2 (2021-11-12)
 * (Ax-LED) minor changes
