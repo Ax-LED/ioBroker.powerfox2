@@ -78,25 +78,7 @@
         "connectionType": "cloud",
         "dataSource": "poll",
         "materialize": true,
-        "materializeTab": true,
-        "adminTab": {
-            "singleton": true,
-            "name": {
-                "en": "powerfox2",
-                "de": "powerfox2",
-                "ru": "powerfox2",
-                "pt": "powerfox2",
-                "nl": "powerfox2",
-                "fr": "powerfox2",
-                "it": "powerfox2",
-                "es": "powerfox2",
-                "pl": "lisek2",
-                "zh-cn": "电狐2"
-            },
-            "link": "",
-            "fa-icon": "info"
-        },
-        "supportCustoms": true,
+        "supportCustoms": false,
         "dependencies": [
             {
                 "js-controller": ">=2.0.0"
