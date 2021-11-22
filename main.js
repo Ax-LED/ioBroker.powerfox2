@@ -37,7 +37,6 @@ class Powerfox2 extends utils.Adapter {
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
 		this.log.debug('Instanz powerfox2 gestartet.');
-		this.log.debug('Email: ' + this.config.email);
 
 		if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
 			this.config.password = tools.decrypt((systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9', this.config.password);
@@ -54,6 +53,9 @@ class Powerfox2 extends utils.Adapter {
 		if(!(this.config.devices && this.config.devices.length)){
 			this.log.info('Fehler bei den Powerfox Geräten: Bitte Geräte in den Instanz Einstellungen prüfen!');
 		}
+
+		this.log.debug('Email: ' + this.config.email);
+		//this.log.debug('Passwort: ' + this.config.password);
 
 		// create basic auth string x
 		let auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
