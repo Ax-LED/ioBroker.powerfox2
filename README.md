@@ -20,6 +20,12 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.0.6 (2021-11-22)
+* (Ax-LED) minor changes
+
+### 0.0.5 (2021-11-22)
+* (Ax-LED) minor changes
+
 ### 0.0.4 (2021-11-22)
 * (Ax-LED) minor changes
 
