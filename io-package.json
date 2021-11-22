@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
+            "0.0.4": {
+                "en": "minor changes",
+                "de": "kleinere Änderungen",
+                "ru": "незначительные изменения",
+                "pt": "pequenas mudanças",
+                "nl": "kleine veranderingen",
+                "fr": "des changements mineurs",
+                "it": "piccoli cambiamenti",
+                "es": "cambios menores",
+                "pl": "drobne zmiany",
+                "zh-cn": "微小的变化"
+            },
             "0.0.3": {
                 "en": "minor changes",
                 "de": "kleinere Änderungen",
