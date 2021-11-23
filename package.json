@@ -1,6 +1,6 @@
 {
   "name": "iobroker.powerfox2",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "powerfox2",
   "author": {
     "name": "Ax-LED",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ax-led/ioBroker.powerfox2"
+    "url": "https://github.com/ax-led/ioBroker.powerfox2.git"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.5.1"
