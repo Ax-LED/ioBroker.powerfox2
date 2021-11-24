@@ -11,7 +11,7 @@
       "name": "bazidibavaria"
     }
   ],
-  "homepage": "https://github.com/ax-led/ioBroker.powerfox2",
+  "homepage": "https://github.com/Ax-LED/ioBroker.powerfox2",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ax-led/ioBroker.powerfox2"
+    "url": "https://github.com/Ax-LED/ioBroker.powerfox2"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.5.1"
@@ -69,7 +69,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/ax-led/ioBroker.powerfox2/issues"
+    "url": "https://github.com/Ax-LED/ioBroker.powerfox2/issues"
   },
   "readmeFilename": "README.md"
 }
