@@ -36,18 +36,18 @@ class Powerfox2 extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.debug('Instanz powerfox2 gestartet.');
+		this.log.debug('powerfox2 instance started.');
 
 		if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
 			this.config.password = tools.decrypt((systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9', this.config.password);
 		}
 
 		if(/[\x00-\x08\x0E-\x1F\x80-\xFF]/.test(this.config.password)){
-			this.log.info('Falsches Passwort: Bitte Passwort in den Instanz Einstellungen erneut eingeben.');
+			this.log.info('Wrong passwort: Please re-enter password in instance settings.');
 		}
 
 		if(!this.config.email || !this.config.password){
-			this.log.info('Fehler bei den Anmeldedaten: Bitte zuerst Instanz Einstellungen konfigurieren!');
+			this.log.info('Error with login datas: Please enter login datas in instance settings.');
 		}
 
 		if(!(this.config.devices && this.config.devices.length)){
@@ -55,7 +55,7 @@ class Powerfox2 extends utils.Adapter {
 		}
 
 		this.log.debug('Email: ' + this.config.email);
-		//this.log.debug('Passwort: ' + this.config.password);
+		//this.log.debug('password: ' + this.config.password);
 
 		// create basic auth string x
 		let auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
@@ -107,43 +107,35 @@ class Powerfox2 extends utils.Adapter {
 
 							//function fsetObjectNotExistsAsync
 							await this.fsetObjectNotExistsAsync(path + '.deviceType', 'state', 'deviceType', 'string', 'text', '', false, false);
-							this.subscribeStates(path + '.deviceType');
+							//this.subscribeStates(path + '.deviceType');
 							await this.setStateAsync(path + '.deviceType', 'POWER', true);
 
 							await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator.outdated', '', false, false);
-							this.subscribeStates(path + '.outdated');
+							//this.subscribeStates(path + '.outdated');
 							await this.setStateAsync(path + '.outdated', data.Outdated, true);
 
 							await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'currentPowerConsumption', 'number', 'value', 'W', false, false);
-							this.subscribeStates(path + '.currentPowerConsumption');
+							//this.subscribeStates(path + '.currentPowerConsumption');
 							await this.setStateAsync(path + '.currentPowerConsumption', consumption, true);
 
 							await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'currentPower', 'number', 'value', 'W', false, false);
-							this.subscribeStates(path + '.currentPower');
+							//this.subscribeStates(path + '.currentPower');
 							await this.setStateAsync(path + '.currentPower', data.Watt, true);
 
 							await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'currentFeedIn', 'number', 'value', 'W', false, false);
-							this.subscribeStates(path + '.currentFeedIn');
+							//this.subscribeStates(path + '.currentFeedIn');
 							await this.setStateAsync(path + '.currentFeedIn', feedIn, true);
 
 							await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumptionMeterReading', 'number', 'value', 'kWh', false, false);
-							this.subscribeStates(path + '.consumptionMeterReadingKWh');
+							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
 							await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus/1000), true);
 
-							//await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingWh', 'state', 'consumption meter reading', 'number', 'value', 'Wh', false, false);
-							//this.subscribeStates(path + '.consumptionMeterReadingWh');
-							//await this.setStateAsync(path + '.consumptionMeterReadingWh', data.A_Plus, true);
-
 							await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feedInMeterReading', 'number', 'value', 'kWh', false, false);
-							this.subscribeStates(path + '.feedInMeterReadingKWh');
+							//this.subscribeStates(path + '.feedInMeterReadingKWh');
 							await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus/1000), true);
 
-							//await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingWh', 'state', 'feed in meter reading', 'number', 'value', 'Wh', false, false);
-							//this.subscribeStates(path + '.feedInMeterReadingWh');
-							//await this.setStateAsync(path + '.feedInMeterReadingWh', data.A_Minus, true);
-
 							await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
-							this.subscribeStates(path + '.timestamp');
+							//this.subscribeStates(path + '.timestamp');
 							let timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
 							await this.setStateAsync(path + '.timestamp', timestamp, true);
 						}

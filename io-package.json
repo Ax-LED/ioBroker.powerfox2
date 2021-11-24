@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.7",
+        "version": "0.0.8",
         "news": {
+            "0.0.8": {
+                "en": "cleaned code\ntranslated log and debug messages",
+                "de": "gereinigter Code\nübersetzte Log- und Debug-Meldungen",
+                "ru": "очищенный код\nпереведенные сообщения журнала и отладки",
+                "pt": "código limpo\nlog traduzido e mensagens de depuração",
+                "nl": "opgeschoonde code\nvertaalde log- en foutopsporingsberichten",
+                "fr": "code nettoyé\nmessages de journal et de débogage traduits",
+                "it": "codice pulito\nmessaggi di log e debug tradotti",
+                "es": "código limpio\nmensajes de depuración y registro traducidos",
+                "pl": "oczyszczony kod\nprzetłumaczone komunikaty dziennika i debugowania",
+                "zh-cn": "清理过的代码\n翻译的日志和调试消息"
+            },
             "0.0.7": {
                 "en": "minor changes",
                 "de": "kleinere Änderungen",
