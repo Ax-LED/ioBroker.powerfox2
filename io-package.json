@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.9",
+        "version": "0.0.10",
         "news": {
+            "0.0.10": {
+                "en": "change year of copyright",
+                "de": "Jahr des Urheberrechts ändern",
+                "ru": "изменить год действия авторских прав",
+                "pt": "mudar ano de direitos autorais",
+                "nl": "jaar van copyright wijzigen",
+                "fr": "changer l'année du droit d'auteur",
+                "it": "cambia anno di copyright",
+                "es": "cambiar año de derechos de autor",
+                "pl": "zmień rok praw autorskich",
+                "zh-cn": "更改版权年份"
+            },
             "0.0.9": {
                 "en": "optimized code on Apollon77 suggestions",
                 "de": "optimierter Code für Apollon77-Vorschläge",
