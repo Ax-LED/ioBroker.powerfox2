@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.10",
+        "version": "0.0.11",
         "news": {
+            "0.0.11": {
+                "en": "change year of license",
+                "de": "Jahr der Lizenz ändern",
+                "ru": "изменить год лицензии",
+                "pt": "mudar ano de licença",
+                "nl": "jaar van licentie wijzigen",
+                "fr": "changer d'année de licence",
+                "it": "cambiare anno di patente",
+                "es": "cambiar año de licencia",
+                "pl": "zmień rok licencji",
+                "zh-cn": "更改执照年份"
+            },
             "0.0.10": {
                 "en": "change year of copyright",
                 "de": "Jahr des Urheberrechts ändern",
