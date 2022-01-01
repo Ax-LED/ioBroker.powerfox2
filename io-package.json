@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.8",
+        "version": "0.0.9",
         "news": {
+            "0.0.9": {
+                "en": "optimized code on Apollon77 suggestions",
+                "de": "optimierter Code für Apollon77-Vorschläge",
+                "ru": "оптимизированный код по предложениям Apollon77",
+                "pt": "código otimizado nas sugestões do Apollon77",
+                "nl": "geoptimaliseerde code op Apollon77-suggesties",
+                "fr": "code optimisé sur les suggestions Apollon77",
+                "it": "codice ottimizzato sui suggerimenti di Apollon77",
+                "es": "código optimizado en sugerencias de Apollon77",
+                "pl": "zoptymalizowany kod pod sugestiami Apollon77",
+                "zh-cn": "Apollon77 建议的优化代码"
+            },
             "0.0.8": {
                 "en": "cleaned code\ntranslated log and debug messages",
                 "de": "gereinigter Code\nübersetzte Log- und Debug-Meldungen",
