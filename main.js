@@ -38,9 +38,9 @@ class Powerfox2 extends utils.Adapter {
 		// this.config:
 		this.log.debug('powerfox2 instance started.');
 
-		if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
+		/*if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
 			this.config.password = tools.decrypt((systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9', this.config.password);
-		}
+		}*/
 
 		if(/[\x00-\x08\x0E-\x1F\x80-\xFF]/.test(this.config.password)){
 			this.log.info('Wrong passwort: Please re-enter password in instance settings.');
@@ -110,7 +110,8 @@ class Powerfox2 extends utils.Adapter {
 							//this.subscribeStates(path + '.deviceType');
 							await this.setStateAsync(path + '.deviceType', 'POWER', true);
 
-							await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator.outdated', '', false, false);
+							//await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator.outdated', '', false, false);
+							await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator', '', false, false);
 							//this.subscribeStates(path + '.outdated');
 							await this.setStateAsync(path + '.outdated', data.Outdated, true);
 
@@ -145,8 +146,8 @@ class Powerfox2 extends utils.Adapter {
 					});
 			}
 		}//End for loop
-
-		this.killTimeout = setTimeout(this.stop.bind(this), 15 * 1000); // 15 Seconds
+		//this.killTimeout = setTimeout(this.stop.bind(this), 15 * 1000); // 15 Seconds
+		this.stop();
 	}
 
 
