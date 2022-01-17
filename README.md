@@ -20,6 +20,10 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.0.12 (2022-01-17)
+-   (Ax-LED) optimized code on Apollon77 suggestions
+-   (Ax-LED) added night time / off-peak electricity values
+
 ### 0.0.11 (2022-01-01)
 -	(Ax-LED) change year of license
 

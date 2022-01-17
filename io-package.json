@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.11",
+        "version": "0.0.12",
         "news": {
+            "0.0.12": {
+                "en": "optimized code on Apollon77 suggestions\nadded night time / off-peak electricity values",
+                "de": "optimierter Code auf Apollon77-Vorschlägen\nzuzüglich Nacht-/Niedertarifstromwerte",
+                "ru": "оптимизированный код по предложениям Apollon77\nдобавлены ночные/непиковые значения электроэнергии",
+                "pt": "código otimizado nas sugestões do Apollon77\nvalores de eletricidade de horário noturno / fora de pico adicionados",
+                "nl": "geoptimaliseerde code op Apollon77-suggesties\ntoegevoegde nacht / dal-elektriciteitswaarden",
+                "fr": "code optimisé sur les suggestions d'Apollon77\nvaleurs électriques ajoutées la nuit / heures creuses",
+                "it": "codice ottimizzato sui suggerimenti di Apollon77\nvalori di energia elettrica notturna/non di punta aggiunti",
+                "es": "código optimizado en las sugerencias de Apollon77\nvalores de electricidad añadidos durante la noche/fuera de las horas pico",
+                "pl": "zoptymalizowany kod pod sugestiami Apollon77\ndodane wartości energii elektrycznej w godzinach nocnych / poza szczytem",
+                "zh-cn": "Apollon77 建议的优化代码\n增加夜间/非高峰用电值"
+            },
             "0.0.11": {
                 "en": "change year of license",
                 "de": "Jahr der Lizenz ändern",

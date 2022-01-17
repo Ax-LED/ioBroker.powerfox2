@@ -24,7 +24,6 @@ class Powerfox2 extends utils.Adapter {
 		});
 		this.killTimeout = null;
 		this.on('ready', this.onReady.bind(this));
-		this.on('stateChange', this.onStateChange.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 	}
 
@@ -51,7 +50,7 @@ class Powerfox2 extends utils.Adapter {
 		}
 
 		if(!(this.config.devices && this.config.devices.length)){
-			this.log.info('Fehler bei den Powerfox Geräten: Bitte Geräte in den Instanz Einstellungen prüfen!');
+			this.log.info('Error on powerfox devices: Please check powerfox device in instance settings.');
 		}
 
 		this.log.debug('Email: ' + this.config.email);
@@ -93,6 +92,8 @@ class Powerfox2 extends utils.Adapter {
 							//"Watt":250.0,
 							//"Timestamp":1636062444,
 							//"A_Plus":217153.0,
+								//"A_Plus_HT": 15556.911,
+								//"A_Plus_NT": 38451.095,
 							//"A_Minus":48676.0
 							//}
 							let consumption = 0, feedIn = 0;
@@ -131,6 +132,14 @@ class Powerfox2 extends utils.Adapter {
 							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
 							await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus/1000), true);
 
+							await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingHTKWh', 'state', 'consumptionMeterReadingHT', 'number', 'value', 'kWh', false, false);
+							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
+							await this.setStateAsync(path + '.consumptionMeterReadingHTKWh', (data.A_Plus_HT/1000), true);
+
+							await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingNTKWh', 'state', 'consumptionMeterReadingNT', 'number', 'value', 'kWh', false, false);
+							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
+							await this.setStateAsync(path + '.consumptionMeterReadingNTKWh', (data.A_Plus_NT/1000), true);
+
 							await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feedInMeterReading', 'number', 'value', 'kWh', false, false);
 							//this.subscribeStates(path + '.feedInMeterReadingKWh');
 							await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus/1000), true);
@@ -165,21 +174,6 @@ class Powerfox2 extends utils.Adapter {
 			callback();
 		} catch (e) {
 			callback();
-		}
-	}
-
-	/**
-	 * Is called if a subscribed state changes
-	 * @param {string} id
-	 * @param {ioBroker.State | null | undefined} state
-	 */
-	onStateChange(id, state) {
-		if (state) {
-			// The state was changed
-			this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-		} else {
-			// The state was deleted
-			this.log.debug(`state ${id} deleted`);
 		}
 	}
 
