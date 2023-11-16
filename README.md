@@ -21,7 +21,7 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 	### **WORK IN PROGRESS**
 -->
 ### 0.0.13 (2023-11-16)
--   (Ax-LED) added timeouot for axios
+-   (Ax-LED) added timeout for axios
 -   (Ax-LED) optimized code
 
 ### 0.0.12 (2022-01-17)
