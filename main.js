@@ -34,12 +34,7 @@ class Powerfox2 extends utils.Adapter {
 		// Initialize your adapter here
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
-		// this.config:
 		this.log.debug('powerfox2 instance started.');
-
-		/*if (this.config.password && (!this.supportsFeature || !this.supportsFeature('ADAPTER_AUTO_DECRYPT_NATIVE'))) {
-			this.config.password = tools.decrypt((systemConfig && systemConfig.native && systemConfig.native.secret) || '5Cd6dDqzq8bBbKJ9', this.config.password);
-		}*/
 
 		if(/[\x00-\x08\x0E-\x1F\x80-\xFF]/.test(this.config.password)){
 			this.log.info('Wrong passwort: Please re-enter password in instance settings.');
@@ -54,19 +49,23 @@ class Powerfox2 extends utils.Adapter {
 		}
 
 		this.log.debug('Email: ' + this.config.email);
-		//this.log.debug('password: ' + this.config.password);
 
 		// create basic auth string x
-		let auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
-		let dataUrl = 'https://backend.powerfox.energy/api/2.0/my/{device}/current';
+		//let auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
+		const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
+		//let dataUrl = 'https://backend.powerfox.energy/api/2.0/my/{device}/current';
+		const dataUrl = 'https://backend.powerfox.energy/api/2.0/my/{device}/current';
 
 		for (let i = 0; i < this.config.devices.length; i++) {
-			let device = this.config.devices[i];
+			//let device = this.config.devices[i];
+			const device = this.config.devices[i];
 
 			this.log.debug('powerfox2 devices:' + JSON.stringify(device));
 			if(device.active){
-				let curDataUrl = dataUrl.replace(/{device}/, device.name);
-				let path = 'devices.'+createVarName(device.name);
+				//let curDataUrl = dataUrl.replace(/{device}/, device.name);
+				const curDataUrl = dataUrl.replace(/{device}/, device.name);
+				//let path = 'devices.'+createVarName(device.name);
+				const path = 'devices.'+createVarName(device.name);
 
 				this.log.debug('device name:' + device.name);
 				this.log.debug('device active:' + device.active);
@@ -78,24 +77,26 @@ class Powerfox2 extends utils.Adapter {
 					url: curDataUrl,
 					headers: {
 						'Authorization': auth
-					}
+					},
+					timeout: 10000 // Timeout in milliseconds (adjust as needed)
 				})
 					.then(async (result) => {
 						this.log.debug('powerfox2 result status:' + JSON.stringify(result.status));
-						this.log.debug('powerfox2 result data:' + JSON.stringify(result.data));
+						//this.log.debug('powerfox2 result data:' + JSON.stringify(result.data));
 
 						if (result.status === 200) {
-							let data = result.data;
+							//let data = result.data;
+							const data = result.data;
 							this.log.debug('powerfox2 received data: ' + JSON.stringify(data));
-							//{
-							//"Outdated":false,
-							//"Watt":250.0,
-							//"Timestamp":1636062444,
-							//"A_Plus":217153.0,
-								//"A_Plus_HT": 15556.911,
-								//"A_Plus_NT": 38451.095,
-							//"A_Minus":48676.0
-							//}
+							/**{
+							"Outdated":false,
+							"Watt":250.0,
+							"Timestamp":1636062444,
+							"A_Plus":217153.0,
+							"A_Plus_HT": 15556.911,
+							"A_Plus_NT": 38451.095,
+							"A_Minus":48676.0
+							}*/
 							let consumption = 0, feedIn = 0;
 
 							if(data.Watt < 0){
@@ -108,45 +109,26 @@ class Powerfox2 extends utils.Adapter {
 
 							//function fsetObjectNotExistsAsync
 							await this.fsetObjectNotExistsAsync(path + '.deviceType', 'state', 'deviceType', 'string', 'text', '', false, false);
-							//this.subscribeStates(path + '.deviceType');
 							await this.setStateAsync(path + '.deviceType', 'POWER', true);
-
-							//await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator.outdated', '', false, false);
 							await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator', '', false, false);
-							//this.subscribeStates(path + '.outdated');
 							await this.setStateAsync(path + '.outdated', data.Outdated, true);
-
 							await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'currentPowerConsumption', 'number', 'value', 'W', false, false);
-							//this.subscribeStates(path + '.currentPowerConsumption');
 							await this.setStateAsync(path + '.currentPowerConsumption', consumption, true);
-
 							await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'currentPower', 'number', 'value', 'W', false, false);
-							//this.subscribeStates(path + '.currentPower');
 							await this.setStateAsync(path + '.currentPower', data.Watt, true);
-
 							await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'currentFeedIn', 'number', 'value', 'W', false, false);
-							//this.subscribeStates(path + '.currentFeedIn');
 							await this.setStateAsync(path + '.currentFeedIn', feedIn, true);
-
 							await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumptionMeterReading', 'number', 'value', 'kWh', false, false);
-							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
 							await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus/1000), true);
-
 							await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingHTKWh', 'state', 'consumptionMeterReadingHT', 'number', 'value', 'kWh', false, false);
-							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
 							await this.setStateAsync(path + '.consumptionMeterReadingHTKWh', (data.A_Plus_HT/1000), true);
-
 							await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingNTKWh', 'state', 'consumptionMeterReadingNT', 'number', 'value', 'kWh', false, false);
-							//this.subscribeStates(path + '.consumptionMeterReadingKWh');
 							await this.setStateAsync(path + '.consumptionMeterReadingNTKWh', (data.A_Plus_NT/1000), true);
-
 							await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feedInMeterReading', 'number', 'value', 'kWh', false, false);
-							//this.subscribeStates(path + '.feedInMeterReadingKWh');
 							await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus/1000), true);
-
 							await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
-							//this.subscribeStates(path + '.timestamp');
-							let timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
+							//let timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
+							const timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
 							await this.setStateAsync(path + '.timestamp', timestamp, true);
 						}
 					})
@@ -181,10 +163,12 @@ class Powerfox2 extends utils.Adapter {
 	async fsetObjectNotExistsAsync(varname, vartype, varcname, varctype, varcrole, varcunit, varcread, varcwrite) {
 
 		//const setObjectNotExitsPromise = util.promisify(this.setObjectNotExists)
-		let proms = [];
+		//let proms = [];
+		const proms = [];
 
 		// Create id tree structure ("adapterid.serialnumber.points")
-		let prom = this.setObjectNotExistsAsync(varname, {
+		//let prom = this.setObjectNotExistsAsync(varname, {
+		const prom = this.setObjectNotExistsAsync(varname, {
 			type: vartype,
 			common: {
 				name: varcname,

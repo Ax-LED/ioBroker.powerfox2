@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "powerfox2",
-        "version": "0.0.12",
+        "version": "0.0.13",
         "news": {
+            "0.0.13": {
+                "en": "added timeouot for axios\noptimized code",
+                "de": "timouot für axios\noptimierter code",
+                "ru": "добавлено timeouot для axios\nоптимизированный код",
+                "pt": "adicionado timeouot para axios\ncódigo otimizado",
+                "nl": "voegde tijdouot toe\noptimaal code",
+                "fr": "timeouot ajouté pour axios\ncode optimisé",
+                "it": "timeouot aggiunto per assio\ncodice ottimizzato",
+                "es": "timeouot añadido para axios\ncódigo optimizado",
+                "pl": "dodać czasoty\noptymalizowany kod",
+                "uk": "доданий часоот для осей\nоптимізований код",
+                "zh-cn": "简称表\n优化守则"
+            },
             "0.0.12": {
                 "en": "optimized code on Apollon77 suggestions\nadded night time / off-peak electricity values",
                 "de": "optimierter Code auf Apollon77-Vorschlägen\nzuzüglich Nacht-/Niedertarifstromwerte",
