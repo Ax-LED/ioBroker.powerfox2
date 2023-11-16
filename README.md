@@ -65,4 +65,4 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 ## License
 MIT License
 
-Copyright (c) 2022 Ax-LED
+Copyright (c) 2023 Ax-LED
