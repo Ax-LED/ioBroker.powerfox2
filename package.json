@@ -24,7 +24,7 @@
     "url": "https://github.com/Ax-LED/ioBroker.powerfox2"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.5.1",
+    "@iobroker/adapter-core": "^3.0.4",
     "axios": "^1.6.2"
   },
   "devDependencies": {
