@@ -148,7 +148,7 @@ class Powerfox2 extends utils.Adapter {
                             } else {
                                 this.log.error('error.response.status: ' + error.response.status); //401
                             }
-                        }                       
+                        }
                     });
             }
         }//End for loop
