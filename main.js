@@ -34,13 +34,13 @@ class Powerfox2 extends utils.Adapter {
         // Initialize your adapter here
 
         // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        this.log.debug('powerfox2 instance started.');
+        this.log.debug('instance started.');
 
         // this line needs further investigation - remove eslint blocker after fixing
         /* eslint-disable-next-line */
-        if(/[\x00-\x08\x0E-\x1F\x80-\xFF]/.test(this.config.password)){
+        /** if(/[\x00-\x08\x0E-\x1F\x80-\xFF]/.test(this.config.password)){
             this.log.info('Wrong passwort: Please re-enter password in instance settings.');
-        }
+        }*/
 
         if(!this.config.email || !this.config.password){
             this.log.info('Error with login datas: Please enter login datas in instance settings.');
@@ -62,17 +62,17 @@ class Powerfox2 extends utils.Adapter {
             //let device = this.config.devices[i];
             const device = this.config.devices[i];
 
-            this.log.debug('powerfox2 devices:' + JSON.stringify(device));
+            this.log.debug('powerfox devices:' + JSON.stringify(device));
             if(device.active){
                 //let curDataUrl = dataUrl.replace(/{device}/, device.name);
                 const curDataUrl = dataUrl.replace(/{device}/, device.name);
                 //let path = 'devices.'+createVarName(device.name);
                 const path = 'devices.'+createVarName(device.name);
 
+                this.log.debug('device url:' + curDataUrl);
                 this.log.debug('device name:' + device.name);
                 this.log.debug('device active:' + device.active);
                 this.log.debug('device aws:' + device.aws);
-                this.log.debug('device url:' + curDataUrl);
 
                 await axios({
                     method: 'get',
@@ -83,13 +83,13 @@ class Powerfox2 extends utils.Adapter {
                     timeout: 10000 // Timeout in milliseconds (adjust as needed)
                 })
                     .then(async (result) => {
-                        this.log.debug('powerfox2 result status:' + JSON.stringify(result.status));
+                        this.log.debug('result status:' + JSON.stringify(result.status));
                         //this.log.debug('powerfox2 result data:' + JSON.stringify(result.data));
 
                         if (result.status === 200) {
                             //let data = result.data;
                             const data = result.data;
-                            this.log.debug('powerfox2 received data: ' + JSON.stringify(data));
+                            this.log.debug('received data: ' + JSON.stringify(data));
                             /**{
 							"Outdated":false,
 							"Watt":250.0,
@@ -135,7 +135,20 @@ class Powerfox2 extends utils.Adapter {
                         }
                     })
                     .catch(async (error) => {
-                        this.log.error('powerfox2 error: ' + error);
+                        this.log.error('error: ' + error); //AxiosError: Request failed with status code 401
+                        this.log.error('error.message: ' + error.message);//Request failed with status code 401
+                        if (error.response) {
+                            // Die Anfrage wurde gemacht und der Server hat mit einem Statuscode geantwortet
+                            // der nicht im Bereich von 2xx liegt.
+                            if (error.response.status === 401) {
+                                // Hier kannst du spezifische Aktionen für den 401-Statuscode durchführen
+                                this.log.error('Error '+error.response.status+': Unauthorized');
+                            } else if (error.response.status === 429) {
+                                this.log.error('Error '+error.response.status+': Too many requests');
+                            } else {
+                                this.log.error('error.response.status: ' + error.response.status); //401
+                            }
+                        }                       
                     });
             }
         }//End for loop
@@ -151,10 +164,10 @@ class Powerfox2 extends utils.Adapter {
     onUnload(callback) {
         try {
             if (this.killTimeout) {
-                this.log.debug('powerfox2 clearing kill timeout');
+                this.log.debug('clearing kill timeout');
                 clearTimeout(this.killTimeout);
             }
-            this.log.debug('powerfox2 cleaned everything up...');
+            this.log.debug('cleaned everything up...');
             callback();
         } catch (e) {
             callback();
