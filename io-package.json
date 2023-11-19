@@ -1,249 +1,178 @@
 {
-    "common": {
-        "name": "powerfox2",
-        "version": "0.0.13",
-        "news": {
-            "0.0.13": {
-                "en": "added timeouot for axios\noptimized code",
-                "de": "timouot für axios\noptimierter code",
-                "ru": "добавлено timeouot для axios\nоптимизированный код",
-                "pt": "adicionado timeouot para axios\ncódigo otimizado",
-                "nl": "voegde tijdouot toe\noptimaal code",
-                "fr": "timeouot ajouté pour axios\ncode optimisé",
-                "it": "timeouot aggiunto per assio\ncodice ottimizzato",
-                "es": "timeouot añadido para axios\ncódigo optimizado",
-                "pl": "dodać czasoty\noptymalizowany kod",
-                "uk": "доданий часоот для осей\nоптимізований код",
-                "zh-cn": "简称表\n优化守则"
-            },
-            "0.0.12": {
-                "en": "optimized code on Apollon77 suggestions\nadded night time / off-peak electricity values",
-                "de": "optimierter Code auf Apollon77-Vorschlägen\nzuzüglich Nacht-/Niedertarifstromwerte",
-                "ru": "оптимизированный код по предложениям Apollon77\nдобавлены ночные/непиковые значения электроэнергии",
-                "pt": "código otimizado nas sugestões do Apollon77\nvalores de eletricidade de horário noturno / fora de pico adicionados",
-                "nl": "geoptimaliseerde code op Apollon77-suggesties\ntoegevoegde nacht / dal-elektriciteitswaarden",
-                "fr": "code optimisé sur les suggestions d'Apollon77\nvaleurs électriques ajoutées la nuit / heures creuses",
-                "it": "codice ottimizzato sui suggerimenti di Apollon77\nvalori di energia elettrica notturna/non di punta aggiunti",
-                "es": "código optimizado en las sugerencias de Apollon77\nvalores de electricidad añadidos durante la noche/fuera de las horas pico",
-                "pl": "zoptymalizowany kod pod sugestiami Apollon77\ndodane wartości energii elektrycznej w godzinach nocnych / poza szczytem",
-                "zh-cn": "Apollon77 建议的优化代码\n增加夜间/非高峰用电值"
-            },
-            "0.0.11": {
-                "en": "change year of license",
-                "de": "Jahr der Lizenz ändern",
-                "ru": "изменить год лицензии",
-                "pt": "mudar ano de licença",
-                "nl": "jaar van licentie wijzigen",
-                "fr": "changer d'année de licence",
-                "it": "cambiare anno di patente",
-                "es": "cambiar año de licencia",
-                "pl": "zmień rok licencji",
-                "zh-cn": "更改执照年份"
-            },
-            "0.0.10": {
-                "en": "change year of copyright",
-                "de": "Jahr des Urheberrechts ändern",
-                "ru": "изменить год действия авторских прав",
-                "pt": "mudar ano de direitos autorais",
-                "nl": "jaar van copyright wijzigen",
-                "fr": "changer l'année du droit d'auteur",
-                "it": "cambia anno di copyright",
-                "es": "cambiar año de derechos de autor",
-                "pl": "zmień rok praw autorskich",
-                "zh-cn": "更改版权年份"
-            },
-            "0.0.9": {
-                "en": "optimized code on Apollon77 suggestions",
-                "de": "optimierter Code für Apollon77-Vorschläge",
-                "ru": "оптимизированный код по предложениям Apollon77",
-                "pt": "código otimizado nas sugestões do Apollon77",
-                "nl": "geoptimaliseerde code op Apollon77-suggesties",
-                "fr": "code optimisé sur les suggestions Apollon77",
-                "it": "codice ottimizzato sui suggerimenti di Apollon77",
-                "es": "código optimizado en sugerencias de Apollon77",
-                "pl": "zoptymalizowany kod pod sugestiami Apollon77",
-                "zh-cn": "Apollon77 建议的优化代码"
-            },
-            "0.0.8": {
-                "en": "cleaned code\ntranslated log and debug messages",
-                "de": "gereinigter Code\nübersetzte Log- und Debug-Meldungen",
-                "ru": "очищенный код\nпереведенные сообщения журнала и отладки",
-                "pt": "código limpo\nlog traduzido e mensagens de depuração",
-                "nl": "opgeschoonde code\nvertaalde log- en foutopsporingsberichten",
-                "fr": "code nettoyé\nmessages de journal et de débogage traduits",
-                "it": "codice pulito\nmessaggi di log e debug tradotti",
-                "es": "código limpio\nmensajes de depuración y registro traducidos",
-                "pl": "oczyszczony kod\nprzetłumaczone komunikaty dziennika i debugowania",
-                "zh-cn": "清理过的代码\n翻译的日志和调试消息"
-            },
-            "0.0.7": {
-                "en": "minor changes",
-                "de": "kleinere Änderungen",
-                "ru": "незначительные изменения",
-                "pt": "pequenas mudanças",
-                "nl": "kleine veranderingen",
-                "fr": "des changements mineurs",
-                "it": "piccoli cambiamenti",
-                "es": "cambios menores",
-                "pl": "drobne zmiany",
-                "zh-cn": "微小的变化"
-            },
-            "0.0.6": {
-                "en": "minor changes",
-                "de": "kleinere Änderungen",
-                "ru": "незначительные изменения",
-                "pt": "pequenas mudanças",
-                "nl": "kleine veranderingen",
-                "fr": "des changements mineurs",
-                "it": "piccoli cambiamenti",
-                "es": "cambios menores",
-                "pl": "drobne zmiany",
-                "zh-cn": "微小的变化"
-            },
-            "0.0.5": {
-                "en": "minor changes",
-                "de": "kleinere Änderungen",
-                "ru": "незначительные изменения",
-                "pt": "pequenas mudanças",
-                "nl": "kleine veranderingen",
-                "fr": "des changements mineurs",
-                "it": "piccoli cambiamenti",
-                "es": "cambios menores",
-                "pl": "drobne zmiany",
-                "zh-cn": "微小的变化"
-            },
-            "0.0.4": {
-                "en": "minor changes",
-                "de": "kleinere Änderungen",
-                "ru": "незначительные изменения",
-                "pt": "pequenas mudanças",
-                "nl": "kleine veranderingen",
-                "fr": "des changements mineurs",
-                "it": "piccoli cambiamenti",
-                "es": "cambios menores",
-                "pl": "drobne zmiany",
-                "zh-cn": "微小的变化"
-            },
-            "0.0.3": {
-                "en": "minor changes",
-                "de": "kleinere Änderungen",
-                "ru": "незначительные изменения",
-                "pt": "pequenas mudanças",
-                "nl": "kleine veranderingen",
-                "fr": "des changements mineurs",
-                "it": "piccoli cambiamenti",
-                "es": "cambios menores",
-                "pl": "drobne zmiany",
-                "zh-cn": "微小的变化"
-            },
-            "0.0.2": {
-                "en": "## License\nMIT License\n\nCopyright (c) 2021 Ax-LED",
-                "de": "## Lizenz\nMIT-Lizenz\n\nCopyright (c) 2021 Ax-LED",
-                "ru": "## Лицензия\nЛицензия MIT\n\nАвторские права (c) 2021 Ax-LED",
-                "pt": "## Licença\nLicença MIT\n\nCopyright (c) 2021 Ax-LED",
-                "nl": "## Vergunning\nMIT-licentie\n\nCopyright (c) 2021 Ax-LED",
-                "fr": "## Licence\nLicence MIT\n\nCopyright (c) 2021 Ax-LED",
-                "it": "## Licenza\nLicenza MIT\n\nCopyright (c) 2021 Ax-LED",
-                "es": "## Licencia\nLicencia MIT\n\nCopyright (c) 2021 Axe-LED",
-                "pl": "## Licencja\nLicencja MIT\n\nPrawa autorskie (c) 2021 Ax-LED",
-                "zh-cn": "＃＃ 执照\n麻省理工学院执照\n\n版权所有 (c) 2021 Ax-LED"
-            },
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
-            }
-        },
-        "titleLang": {
-            "en": "powerfox2",
-            "de": "powerfox2",
-            "ru": "powerfox2",
-            "pt": "powerfox2",
-            "nl": "powerfox2",
-            "fr": "powerfox2",
-            "it": "powerfox2",
-            "es": "powerfox2",
-            "pl": "lisek2",
-            "zh-cn": "电狐2"
-        },
-        "desc": {
-            "en": "powerfox2 provides energy data",
-            "de": "powerfox2 liefert Energiedaten",
-            "ru": "powerfox2 предоставляет данные об энергии",
-            "pt": "powerfox2 fornece dados de energia",
-            "nl": "powerfox2 levert energiegegevens",
-            "fr": "powerfox2 fournit des données énergétiques",
-            "it": "powerfox2 fornisce dati sull'energia",
-            "es": "powerfox2 proporciona datos de energía",
-            "pl": "powerfox2 dostarcza dane dotyczące energii",
-            "zh-cn": "powerfox提供能源数据"
-        },
-        "authors": [
-            "Ax-LED <alex_draxler@yahoo.de>"
-        ],
-        "keywords": [
-            "powerfox",
-            "poweropti",
-            "energiedaten",
-            "energy data",
-            "stromverbrauch",
-            "strommessung"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "powerfox2.png",
-        "extIcon": "https://raw.githubusercontent.com/ax-led/ioBroker.powerfox2/main/admin/powerfox2.png",
-        "readme": "https://github.com/ax-led/ioBroker.powerfox2/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "schedule",
-        "schedule": "* * * * *",
-        "type": "energy",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "materialize": true,
-        "supportCustoms": false,
-        "dependencies": [
-            {
-                "js-controller": ">=3.0.0"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=4.0.9"
-            }
-        ]
+  "common": {
+    "name": "powerfox2",
+    "version": "0.0.14",
+    "news": {
+      "0.0.14": {
+        "en": "further code optimizations",
+        "de": "weitere codeoptimierungen",
+        "ru": "дальнейшая оптимизация кода",
+        "pt": "mais otimizações de código",
+        "nl": "vertaling:",
+        "fr": "d'autres optimisations de code",
+        "it": "ulteriori ottimizzazioni del codice",
+        "es": "nuevas optimizaciones de código",
+        "pl": "dalsza optymalizacja kodu",
+        "uk": "подальші оптимізації коду",
+        "zh-cn": "进一步规范优化"
+      },
+      "0.0.13": {
+        "en": "added timeouot for axios\noptimized code",
+        "de": "timouot für axios\noptimierter code",
+        "ru": "добавлено timeouot для axios\nоптимизированный код",
+        "pt": "adicionado timeouot para axios\ncódigo otimizado",
+        "nl": "voegde tijdouot toe\noptimaal code",
+        "fr": "timeouot ajouté pour axios\ncode optimisé",
+        "it": "timeouot aggiunto per assio\ncodice ottimizzato",
+        "es": "timeouot añadido para axios\ncódigo optimizado",
+        "pl": "dodać czasoty\noptymalizowany kod",
+        "uk": "доданий часоот для осей\nоптимізований код",
+        "zh-cn": "简称表\n优化守则"
+      },
+      "0.0.12": {
+        "en": "optimized code on Apollon77 suggestions\nadded night time / off-peak electricity values",
+        "de": "optimierter Code auf Apollon77-Vorschlägen\nzuzüglich Nacht-/Niedertarifstromwerte",
+        "ru": "оптимизированный код по предложениям Apollon77\nдобавлены ночные/непиковые значения электроэнергии",
+        "pt": "código otimizado nas sugestões do Apollon77\nvalores de eletricidade de horário noturno / fora de pico adicionados",
+        "nl": "geoptimaliseerde code op Apollon77-suggesties\ntoegevoegde nacht / dal-elektriciteitswaarden",
+        "fr": "code optimisé sur les suggestions d'Apollon77\nvaleurs électriques ajoutées la nuit / heures creuses",
+        "it": "codice ottimizzato sui suggerimenti di Apollon77\nvalori di energia elettrica notturna/non di punta aggiunti",
+        "es": "código optimizado en las sugerencias de Apollon77\nvalores de electricidad añadidos durante la noche/fuera de las horas pico",
+        "pl": "zoptymalizowany kod pod sugestiami Apollon77\ndodane wartości energii elektrycznej w godzinach nocnych / poza szczytem",
+        "zh-cn": "Apollon77 建议的优化代码\n增加夜间/非高峰用电值"
+      },
+      "0.0.11": {
+        "en": "change year of license",
+        "de": "Jahr der Lizenz ändern",
+        "ru": "изменить год лицензии",
+        "pt": "mudar ano de licença",
+        "nl": "jaar van licentie wijzigen",
+        "fr": "changer d'année de licence",
+        "it": "cambiare anno di patente",
+        "es": "cambiar año de licencia",
+        "pl": "zmień rok licencji",
+        "zh-cn": "更改执照年份"
+      },
+      "0.0.10": {
+        "en": "change year of copyright",
+        "de": "Jahr des Urheberrechts ändern",
+        "ru": "изменить год действия авторских прав",
+        "pt": "mudar ano de direitos autorais",
+        "nl": "jaar van copyright wijzigen",
+        "fr": "changer l'année du droit d'auteur",
+        "it": "cambia anno di copyright",
+        "es": "cambiar año de derechos de autor",
+        "pl": "zmień rok praw autorskich",
+        "zh-cn": "更改版权年份"
+      },
+      "0.0.9": {
+        "en": "optimized code on Apollon77 suggestions",
+        "de": "optimierter Code für Apollon77-Vorschläge",
+        "ru": "оптимизированный код по предложениям Apollon77",
+        "pt": "código otimizado nas sugestões do Apollon77",
+        "nl": "geoptimaliseerde code op Apollon77-suggesties",
+        "fr": "code optimisé sur les suggestions Apollon77",
+        "it": "codice ottimizzato sui suggerimenti di Apollon77",
+        "es": "código optimizado en sugerencias de Apollon77",
+        "pl": "zoptymalizowany kod pod sugestiami Apollon77",
+        "zh-cn": "Apollon77 建议的优化代码"
+      },
+      "0.0.8": {
+        "en": "cleaned code\ntranslated log and debug messages",
+        "de": "gereinigter Code\nübersetzte Log- und Debug-Meldungen",
+        "ru": "очищенный код\nпереведенные сообщения журнала и отладки",
+        "pt": "código limpo\nlog traduzido e mensagens de depuração",
+        "nl": "opgeschoonde code\nvertaalde log- en foutopsporingsberichten",
+        "fr": "code nettoyé\nmessages de journal et de débogage traduits",
+        "it": "codice pulito\nmessaggi di log e debug tradotti",
+        "es": "código limpio\nmensajes de depuración y registro traducidos",
+        "pl": "oczyszczony kod\nprzetłumaczone komunikaty dziennika i debugowania",
+        "zh-cn": "清理过的代码\n翻译的日志和调试消息"
+      }
     },
-    "encryptedNative": [
-        "password"
-    ],
-    "protectedNative": [
-        "password"
-    ],
-    "native": {
-        "username": "",
-        "password": "",
-        "email": "",
-        "devices": []
+    "titleLang": {
+      "en": "powerfox2",
+      "de": "powerfox2",
+      "ru": "powerfox2",
+      "pt": "powerfox2",
+      "nl": "powerfox2",
+      "fr": "powerfox2",
+      "it": "powerfox2",
+      "es": "powerfox2",
+      "pl": "lisek2",
+      "zh-cn": "电狐2"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "devices",
-            "type": "channel",
-            "common": {
-                "role": "state",
-                "name": "devices"
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "powerfox2 provides energy data",
+      "de": "powerfox2 liefert Energiedaten",
+      "ru": "powerfox2 предоставляет данные об энергии",
+      "pt": "powerfox2 fornece dados de energia",
+      "nl": "powerfox2 levert energiegegevens",
+      "fr": "powerfox2 fournit des données énergétiques",
+      "it": "powerfox2 fornisce dati sull'energia",
+      "es": "powerfox2 proporciona datos de energía",
+      "pl": "powerfox2 dostarcza dane dotyczące energii",
+      "zh-cn": "powerfox提供能源数据"
+    },
+    "authors": [
+      "Ax-LED <alex_draxler@yahoo.de>"
+    ],
+    "keywords": [
+      "powerfox",
+      "poweropti",
+      "energiedaten",
+      "energy data",
+      "stromverbrauch",
+      "strommessung"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "powerfox2.png",
+    "extIcon": "https://raw.githubusercontent.com/ax-led/ioBroker.powerfox2/main/admin/powerfox2.png",
+    "readme": "https://github.com/ax-led/ioBroker.powerfox2/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "schedule",
+    "schedule": "* * * * *",
+    "type": "energy",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "materialize": true,
+    "supportCustoms": false,
+    "dependencies": [
+      {
+        "js-controller": ">=3.0.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=4.0.9"
+      }
     ]
+  },
+  "encryptedNative": [
+    "password"
+  ],
+  "protectedNative": [
+    "password"
+  ],
+  "native": {
+    "username": "",
+    "password": "",
+    "email": "",
+    "devices": []
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "devices",
+      "type": "channel",
+      "common": {
+        "role": "state",
+        "name": "devices"
+      },
+      "native": {}
+    }
+  ]
 }

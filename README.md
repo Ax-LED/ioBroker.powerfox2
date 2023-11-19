@@ -20,8 +20,9 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.14 (2023-11-19)
 - further code optimizations
+
 ### 0.0.13 (2023-11-16)
 -   (Ax-LED) added timeout for axios
 -   (Ax-LED) optimized code
