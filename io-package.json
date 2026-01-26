@@ -130,7 +130,6 @@
       "license": "MIT"
     },
     "platform": "Javascript/Node.js",
-    "main": "main.js",
     "icon": "powerfox2.png",
     "extIcon": "https://raw.githubusercontent.com/ax-led/ioBroker.powerfox2/main/admin/powerfox2.png",
     "readme": "https://github.com/ax-led/ioBroker.powerfox2/blob/main/README.md",
