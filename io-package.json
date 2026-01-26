@@ -132,6 +132,7 @@
     "extIcon": "https://raw.githubusercontent.com/ax-led/ioBroker.powerfox2/main/admin/powerfox2.png",
     "readme": "https://github.com/ax-led/ioBroker.powerfox2/blob/main/README.md",
     "loglevel": "info",
+    "tier": 2,
     "mode": "schedule",
     "schedule": "* * * * *",
     "type": "energy",
