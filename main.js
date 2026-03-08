@@ -191,13 +191,13 @@ class Powerfox2 extends utils.Adapter {
 
                         // --- ÄNDERUNG [NICE TO HAVE #8]: Timestamp als Unix-Millisekunden (number) statt UTC-String ---
                         // ALTCODE:
-                        // await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
-                        // const timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
-                        // await this.setStateAsync(path + '.timestamp', timestamp, true);
-                        // NEUCODE:
-                        await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'number', 'date', '', false, false);
-                        const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
+                        await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
+                        const timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
                         await this.setStateAsync(path + '.timestamp', timestamp, true);
+                        // NEUCODE:
+                        // await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'number', 'date', '', false, false);
+                        // const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
+                        // await this.setStateAsync(path + '.timestamp', timestamp, true);
                         // --- ENDE ÄNDERUNG ---
                     }
                 } catch (error) {
