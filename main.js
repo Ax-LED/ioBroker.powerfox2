@@ -135,7 +135,13 @@ class Powerfox2 extends utils.Adapter {
                         this.log.debug('feedIn: ' + feedIn);
                         this.log.debug('consumption: ' + consumption);
 
-                        const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
+                        // --- ÄNDERUNG [NICE TO HAVE #8 REVERT]: Timestamp zurück als UTC-String (string) ---
+                        // wegen bestehendem State-Typ in ioBroker-Datenbank (wurde als string angelegt)
+                        // ALTCODE (number):
+                        // const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
+                        // NEUCODE (string):
+                        const timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
+                        // --- ENDE ÄNDERUNG ---
 
                         // --- ÄNDERUNG [OPTIMIERUNG #1]: Objekte nur anlegen wenn noch nicht vorhanden,
                         // einmalige Prüfung anhand eines einzelnen States statt 10x fsetObjectNotExistsAsync ---
@@ -159,7 +165,9 @@ class Powerfox2 extends utils.Adapter {
                             await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingHTKWh', 'state', 'consumptionMeterReadingHT', 'number', 'value', 'kWh', false, false);
                             await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingNTKWh', 'state', 'consumptionMeterReadingNT', 'number', 'value', 'kWh', false, false);
                             await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feedInMeterReading', 'number', 'value', 'kWh', false, false);
-                            await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'number', 'date', '', false, false);
+                            // ALTCODE (number): await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'number', 'date', '', false, false);
+                            // NEUCODE (string): passend zum bestehenden State-Typ in ioBroker
+                            await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
                         }
                         // --- ENDE ÄNDERUNG ---
 
