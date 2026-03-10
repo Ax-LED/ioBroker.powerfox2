@@ -67,11 +67,9 @@
                 var $key = $(this);
                 var id = $key.attr('id');
                 if ($key.attr('type') === 'checkbox') {
-                    // do not call onChange direct, because onChange could expect some arguments
                     $key.prop('checked', settings[id])
                         .on('change', () => onChange());
                 } else {
-                    // do not call onChange direct, because onChange could expect some arguments
                     $key.val(settings[id])
                         .on('change', () => onChange())
                         .on('keyup', () => onChange());
@@ -127,6 +125,13 @@
                                 $(".update-device-list-message").hide();
                                 $(".update-device-list-message span").text();
 
+                                // --- ÄNDERUNG: found-Klassen zurücksetzen damit bestehende Zeilen
+                                // neu gezeichnet werden und division aktualisiert wird ---
+                                // ALTCODE: (nicht vorhanden)
+                                // NEUCODE:
+                                $("#devices > tr").removeClass("found");
+                                // --- ENDE ÄNDERUNG ---
+
                                 // --- ÄNDERUNG: row.Division aus API-Antwort an addDeviceRow übergeben ---
                                 // ALTCODE:
                                 // $.each(data, function(index, row){
@@ -166,7 +171,8 @@
 
             checkButtonState();
 
-            // --- ÄNDERUNG: addDeviceRow um Parameter 'division' erweitert ---
+            // --- ÄNDERUNG: addDeviceRow um Parameter 'division' erweitert,
+            // bestehende Zeile wird aktualisiert statt übersprungen ---
             // ALTCODE:
             // function addDeviceRow(onChange, name, aws, active){
             //     if(findDeviceInRows(name)) return;
@@ -181,17 +187,34 @@
             // }
             // NEUCODE:
             function addDeviceRow(onChange, name, division, aws, active){
-                if(findDeviceInRows(name)) return;
+                let dateString = "";
+                try { dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().split('T')[0]; } catch(e){}
+
+                let divisionLabel = getDivisionLabel(division);
+
+                // --- ÄNDERUNG: bestehende Zeile aktualisieren wenn sie schon existiert ---
+                // ALTCODE: if(findDeviceInRows(name)) return;  ← überspringt bestehende Zeilen komplett
+                // NEUCODE:
+                var existingRow = null;
+                $('#devices > tr').each(function () {
+                    if (name.toLowerCase().trim() == $("td", $(this)).eq(1).text().toLowerCase().trim()) {
+                        existingRow = $(this);
+                    }
+                });
+
+                if (existingRow) {
+                    // Zeile existiert bereits → division und aws aktualisieren, active beibehalten
+                    existingRow.find('td').eq(2).attr('data-division', division).text(divisionLabel);
+                    existingRow.find('td').eq(3).attr('data-aws', aws).text(dateString);
+                    existingRow.addClass("found");
+                    onChange();
+                    return;
+                }
+                // --- ENDE ÄNDERUNG ---
 
                 let countRows = $('#devices > tr').length;
                 let newIndex = countRows + 1;
                 let isChecked = (active)?' checked="checked"':"";
-
-                let dateString = "";
-                try { dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().split('T')[0]; } catch(e){}
-
-                // Division-Rohwert als data-Attribut speichern, übersetzter Text als Anzeige
-                let divisionLabel = getDivisionLabel(division);
 
                 let newRow = '<tr>'
                     + '<td><p>' + newIndex + '</p></td>'
@@ -252,7 +275,6 @@
 
         // This will be called by the admin adapter when the user presses the save button
         function save(callback) {
-            // example: select elements with class=value and build settings object
             var obj = {};
             $('.value').each(function () {
                 var $this = $(this);
