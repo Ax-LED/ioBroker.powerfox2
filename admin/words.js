@@ -145,5 +145,101 @@ systemDictionary = {
     "es": "activo",
     "pl": "aktywny",
     "zh-cn": "活性"
+  },
+  "meter type": {
+    "en": "meter type",
+    "de": "Zählertyp",
+    "ru": "тип счётчика",
+    "pt": "tipo de medidor",
+    "nl": "metertype",
+    "fr": "type de compteur",
+    "it": "tipo di contatore",
+    "es": "tipo de contador",
+    "pl": "typ licznika",
+    "zh-cn": "计量表类型"
+  },
+  "division no type": {
+    "en": "no type",
+    "de": "Kein Typ",
+    "ru": "нет типа",
+    "pt": "sem tipo",
+    "nl": "geen type",
+    "fr": "aucun type",
+    "it": "nessun tipo",
+    "es": "sin tipo",
+    "pl": "brak typu",
+    "zh-cn": "无类型"
+  },
+  "division electricity": {
+    "en": "electricity meter",
+    "de": "Stromzähler",
+    "ru": "счётчик электроэнергии",
+    "pt": "medidor de eletricidade",
+    "nl": "elektriciteitsmeter",
+    "fr": "compteur d'électricité",
+    "it": "contatore elettrico",
+    "es": "contador de electricidad",
+    "pl": "licznik energii elektrycznej",
+    "zh-cn": "电表"
+  },
+  "division cold water": {
+    "en": "cold water meter",
+    "de": "Kaltwasserzähler",
+    "ru": "счётчик холодной воды",
+    "pt": "medidor de água fria",
+    "nl": "koudwatermeter",
+    "fr": "compteur d'eau froide",
+    "it": "contatore acqua fredda",
+    "es": "contador de agua fría",
+    "pl": "licznik zimnej wody",
+    "zh-cn": "冷水表"
+  },
+  "division hot water": {
+    "en": "hot water meter",
+    "de": "Warmwasserzähler",
+    "ru": "счётчик горячей воды",
+    "pt": "medidor de água quente",
+    "nl": "warmwatermeter",
+    "fr": "compteur d'eau chaude",
+    "it": "contatore acqua calda",
+    "es": "contador de agua caliente",
+    "pl": "licznik ciepłej wody",
+    "zh-cn": "热水表"
+  },
+  "division heat": {
+    "en": "heat meter",
+    "de": "Wärmezähler",
+    "ru": "счётчик тепла",
+    "pt": "medidor de calor",
+    "nl": "warmtemeter",
+    "fr": "compteur de chaleur",
+    "it": "contatore di calore",
+    "es": "contador de calor",
+    "pl": "licznik ciepła",
+    "zh-cn": "热量表"
+  },
+  "division gas": {
+    "en": "gas meter",
+    "de": "Gaszähler",
+    "ru": "газовый счётчик",
+    "pt": "medidor de gás",
+    "nl": "gasmeter",
+    "fr": "compteur de gaz",
+    "it": "contatore del gas",
+    "es": "contador de gas",
+    "pl": "licznik gazu",
+    "zh-cn": "燃气表"
+  },
+  "division cold and hot water": {
+    "en": "cold and hot water meter",
+    "de": "Kalt- und Warmwasserzähler",
+    "ru": "счётчик холодной и горячей воды",
+    "pt": "medidor de água fria e quente",
+    "nl": "koud- en warmwatermeter",
+    "fr": "compteur eau froide et chaude",
+    "it": "contatore acqua fredda e calda",
+    "es": "contador de agua fría y caliente",
+    "pl": "licznik zimnej i ciepłej wody",
+    "zh-cn": "冷热水表"
   }
 };
