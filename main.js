@@ -95,42 +95,7 @@ class Powerfox2 extends utils.Adapter {
                 this.log.debug('device aws:' + device.aws);
 
                 // --- ÄNDERUNG [WICHTIG #1]: await + .then/.catch durch try/catch ersetzen ---
-                // ALTCODE:
-                // await axios({
-                //     method: 'get',
-                //     url: curDataUrl,
-                //     headers: {
-                //         'Authorization': auth
-                //     },
-                //     timeout: 10000
-                // })
-                //     .then(async (result) => {
-                //         this.log.debug('result status:' + JSON.stringify(result.status));
-                //         if (result.status === 200) {
-                //             const data = result.data;
-                //             this.log.debug('received data: ' + JSON.stringify(data));
-                //             let consumption = 0, feedIn = 0;
-                //             if(data.Watt < 0){
-                //                 feedIn = (data.Watt * -1);
-                //             } else {
-                //                 consumption = data.Watt;
-                //             }
-                //             ... (setState calls)
-                //         }
-                //     })
-                //     .catch(async (error) => {
-                //         this.log.error('error: ' + error);
-                //         this.log.error('error.message: ' + error.message);
-                //         if (error.response) {
-                //             if (error.response.status === 401) {
-                //                 this.log.error('Error '+error.response.status+': Unauthorized');
-                //             } else if (error.response.status === 429) {
-                //                 this.log.error('Error '+error.response.status+': Too many requests');
-                //             } else {
-                //                 this.log.error('error.response.status: ' + error.response.status);
-                //             }
-                //         }
-                //     });
+                // ALTCODE: (siehe vorherige Version)
                 // NEUCODE:
                 try {
                     const result = await apiClient.get(curDataUrl);
@@ -170,34 +135,59 @@ class Powerfox2 extends utils.Adapter {
                         this.log.debug('feedIn: ' + feedIn);
                         this.log.debug('consumption: ' + consumption);
 
-                        await this.fsetObjectNotExistsAsync(path + '.deviceType', 'state', 'deviceType', 'string', 'text', '', false, false);
-                        await this.setStateAsync(path + '.deviceType', 'POWER', true);
-                        await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator', '', false, false);
-                        await this.setStateAsync(path + '.outdated', data.Outdated, true);
-                        await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'currentPowerConsumption', 'number', 'value', 'W', false, false);
-                        await this.setStateAsync(path + '.currentPowerConsumption', consumption, true);
-                        await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'currentPower', 'number', 'value', 'W', false, false);
-                        await this.setStateAsync(path + '.currentPower', data.Watt, true);
-                        await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'currentFeedIn', 'number', 'value', 'W', false, false);
-                        await this.setStateAsync(path + '.currentFeedIn', feedIn, true);
-                        await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumptionMeterReading', 'number', 'value', 'kWh', false, false);
-                        await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus / 1000), true);
-                        await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingHTKWh', 'state', 'consumptionMeterReadingHT', 'number', 'value', 'kWh', false, false);
-                        await this.setStateAsync(path + '.consumptionMeterReadingHTKWh', (data.A_Plus_HT / 1000), true);
-                        await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingNTKWh', 'state', 'consumptionMeterReadingNT', 'number', 'value', 'kWh', false, false);
-                        await this.setStateAsync(path + '.consumptionMeterReadingNTKWh', (data.A_Plus_NT / 1000), true);
-                        await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feedInMeterReading', 'number', 'value', 'kWh', false, false);
-                        await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus / 1000), true);
+                        const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
 
-                        // --- ÄNDERUNG [NICE TO HAVE #8]: Timestamp als Unix-Millisekunden (number) statt UTC-String ---
+                        // --- ÄNDERUNG [OPTIMIERUNG #1]: Objekte nur anlegen wenn noch nicht vorhanden,
+                        // einmalige Prüfung anhand eines einzelnen States statt 10x fsetObjectNotExistsAsync ---
                         // ALTCODE:
-                        await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'string', 'date', '', false, false);
-                        const timestamp = new Date((parseInt(data.Timestamp) || 0) * 1000).toUTCString();
-                        await this.setStateAsync(path + '.timestamp', timestamp, true);
+                        // await this.fsetObjectNotExistsAsync(path + '.deviceType', ...);
+                        // await this.setStateAsync(path + '.deviceType', 'POWER', true);
+                        // await this.fsetObjectNotExistsAsync(path + '.outdated', ...);
+                        // await this.setStateAsync(path + '.outdated', data.Outdated, true);
+                        // ... (10x sequenziell)
                         // NEUCODE:
-                        // await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'number', 'date', '', false, false);
-                        // const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
+                        const existingState = await this.getStateAsync(path + '.deviceType');
+                        if (!existingState) {
+                            // Objekte nur beim ersten Mal anlegen (sequenziell notwendig)
+                            this.log.debug('creating objects for device: ' + device.name);
+                            await this.fsetObjectNotExistsAsync(path + '.deviceType', 'state', 'deviceType', 'string', 'text', '', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.outdated', 'state', 'outdated', 'boolean', 'indicator', '', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.currentPowerConsumption', 'state', 'currentPowerConsumption', 'number', 'value', 'W', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.currentPower', 'state', 'currentPower', 'number', 'value', 'W', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.currentFeedIn', 'state', 'currentFeedIn', 'number', 'value', 'W', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingKWh', 'state', 'consumptionMeterReading', 'number', 'value', 'kWh', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingHTKWh', 'state', 'consumptionMeterReadingHT', 'number', 'value', 'kWh', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.consumptionMeterReadingNTKWh', 'state', 'consumptionMeterReadingNT', 'number', 'value', 'kWh', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.feedInMeterReadingKWh', 'state', 'feedInMeterReading', 'number', 'value', 'kWh', false, false);
+                            await this.fsetObjectNotExistsAsync(path + '.timestamp', 'state', 'DateTime from data', 'number', 'date', '', false, false);
+                        }
+                        // --- ENDE ÄNDERUNG ---
+
+                        // --- ÄNDERUNG [OPTIMIERUNG #2]: alle States parallel schreiben mit Promise.all ---
+                        // ALTCODE:
+                        // await this.setStateAsync(path + '.deviceType', 'POWER', true);
+                        // await this.setStateAsync(path + '.outdated', data.Outdated, true);
+                        // await this.setStateAsync(path + '.currentPowerConsumption', consumption, true);
+                        // await this.setStateAsync(path + '.currentPower', data.Watt, true);
+                        // await this.setStateAsync(path + '.currentFeedIn', feedIn, true);
+                        // await this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus / 1000), true);
+                        // await this.setStateAsync(path + '.consumptionMeterReadingHTKWh', (data.A_Plus_HT / 1000), true);
+                        // await this.setStateAsync(path + '.consumptionMeterReadingNTKWh', (data.A_Plus_NT / 1000), true);
+                        // await this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus / 1000), true);
                         // await this.setStateAsync(path + '.timestamp', timestamp, true);
+                        // NEUCODE:
+                        await Promise.all([
+                            this.setStateAsync(path + '.deviceType', 'POWER', true),
+                            this.setStateAsync(path + '.outdated', data.Outdated, true),
+                            this.setStateAsync(path + '.currentPowerConsumption', consumption, true),
+                            this.setStateAsync(path + '.currentPower', data.Watt, true),
+                            this.setStateAsync(path + '.currentFeedIn', feedIn, true),
+                            this.setStateAsync(path + '.consumptionMeterReadingKWh', (data.A_Plus / 1000), true),
+                            this.setStateAsync(path + '.consumptionMeterReadingHTKWh', (data.A_Plus_HT / 1000), true),
+                            this.setStateAsync(path + '.consumptionMeterReadingNTKWh', (data.A_Plus_NT / 1000), true),
+                            this.setStateAsync(path + '.feedInMeterReadingKWh', (data.A_Minus / 1000), true),
+                            this.setStateAsync(path + '.timestamp', timestamp, true),
+                        ]);
                         // --- ENDE ÄNDERUNG ---
                     }
                 } catch (error) {
