@@ -22,9 +22,11 @@
         // ALTCODE: (nicht vorhanden)
         // NEUCODE:
         // Übersetzungen direkt eingebaut, keine Abhängigkeit von translateWord().
-        // Andere Sprachen fallen auf Englisch zurück.
+        // Sprache wird über ioBroker systemLang ermittelt, Fallback auf Englisch.
         function getDivisionLabel(division) {
-            var lang = document.documentElement.lang || 'en';
+            // ALTCODE: var lang = document.documentElement.lang || 'en';
+            // NEUCODE: systemLang ist die globale ioBroker-Sprachvariable
+            var lang = (typeof systemLang !== 'undefined' && systemLang) ? systemLang : (document.documentElement.lang || 'en');
 
             var divisionMap = {
                 '-1': { "en": "no type",                  "de": "Kein Typ" },
