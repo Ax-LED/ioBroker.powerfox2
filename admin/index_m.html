@@ -18,6 +18,28 @@
     <script type="text/javascript">
         var secret = '';
 
+        // --- ÄNDERUNG: Hilfsfunktion zur Anzeige des Zählertyps anhand Division-Wert ---
+        // ALTCODE: (nicht vorhanden)
+        // NEUCODE:
+        // Schlüssel aus divisionKeyMap werden in words.js übersetzt,
+        // translateWord() aus translate.js liest die aktuelle ioBroker-Sprache.
+        function getDivisionLabel(division) {
+            var divisionKeyMap = {
+                '-1': 'division no type',
+                '0':  'division electricity',
+                '1':  'division cold water',
+                '2':  'division hot water',
+                '3':  'division heat',
+                '4':  'division gas',
+                '5':  'division cold and hot water'
+            };
+            var key = String(division);
+            var dictKey = divisionKeyMap.hasOwnProperty(key) ? divisionKeyMap[key] : null;
+            if (!dictKey) return 'Unknown (' + division + ')';
+            return translateWord(dictKey);
+        }
+        // --- ENDE ÄNDERUNG ---
+
         // the function loadSettings has to exist ...
         function load(settings, onChange) {
             if (systemConfig) {
@@ -30,6 +52,7 @@
                 loadHelper(settings, onChange);
             });
         }
+
         // This will be called by the admin adapter when the settings page loads
         function loadHelper(settings, onChange) {
             if (!settings) return;
@@ -42,11 +65,9 @@
                 var $key = $(this);
                 var id = $key.attr('id');
                 if ($key.attr('type') === 'checkbox') {
-                    // do not call onChange direct, because onChange could expect some arguments
                     $key.prop('checked', settings[id])
                         .on('change', () => onChange());
                 } else {
-                    // do not call onChange direct, because onChange could expect some arguments
                     $key.val(settings[id])
                         .on('change', () => onChange())
                         .on('keyup', () => onChange());
@@ -57,7 +78,12 @@
             let countDevices = settings.devices.length;
             if (countDevices > 0) {
                 for (let i = 0; i < countDevices; i++) {
-                    addDeviceRow(onChange, settings.devices[i].name, settings.devices[i].aws, settings.devices[i].active);
+                    // --- ÄNDERUNG: division aus settings laden und an addDeviceRow übergeben ---
+                    // ALTCODE:
+                    // addDeviceRow(onChange, settings.devices[i].name, settings.devices[i].aws, settings.devices[i].active);
+                    // NEUCODE:
+                    addDeviceRow(onChange, settings.devices[i].name, settings.devices[i].division, settings.devices[i].aws, settings.devices[i].active);
+                    // --- ENDE ÄNDERUNG ---
                 }
             }
 
@@ -97,11 +123,18 @@
                                 $(".update-device-list-message").hide();
                                 $(".update-device-list-message span").text();
 
-                                // add each device
+                                // --- ÄNDERUNG: row.Division aus API-Antwort an addDeviceRow übergeben ---
+                                // ALTCODE:
+                                // $.each(data, function(index, row){
+                                //     addDeviceRow(onChange, row.DeviceId, row.AccountAssociatedSince, false);
+                                //     findDeviceInRows(row.DeviceId);
+                                // });
+                                // NEUCODE:
                                 $.each(data, function(index, row){
-                                    addDeviceRow(onChange, row.DeviceId, row.AccountAssociatedSince, false);
+                                    addDeviceRow(onChange, row.DeviceId, row.Division, row.AccountAssociatedSince, false);
                                     findDeviceInRows(row.DeviceId);
                                 });
+                                // --- ENDE ÄNDERUNG ---
 
                                 // delete not returned devices
                                 $("#devices > tr:not(.found)").remove();
@@ -129,25 +162,39 @@
 
             checkButtonState();
 
-            //Add new row to table for device
-            function addDeviceRow(onChange, name, aws, active){
+            // --- ÄNDERUNG: addDeviceRow um Parameter 'division' erweitert ---
+            // ALTCODE:
+            // function addDeviceRow(onChange, name, aws, active){
+            //     ...
+            //     let newRow = '<tr>...<td data-aws="' + aws + '">' + dateString + '</td><td><input...></td></tr>';
+            //     $('#devices > tr').eq(countRows).find('td').eq(3).find('input').on('change'...);
+            // }
+            // NEUCODE:
+            function addDeviceRow(onChange, name, division, aws, active){
                 if(findDeviceInRows(name)) return;
 
                 let countRows = $('#devices > tr').length;
                 let newIndex = countRows + 1;
-
                 let isChecked = (active)?' checked="checked"':"";
 
                 let dateString = "";
-                // try { let dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().replace(/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})T([0-9]{2})\:([0-9]{2})\:([0-9]{2})[^Z]+Z$/, "$3.$2.$1 $4:$5:$6"); } catch(e){}
-                // try { let dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().replace(/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})T([0-9]{2})\:([0-9]{2})\:([0-9]{2})[^Z]+Z$/, "$3.$2.$1"); } catch(e){}
                 try { dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().split('T')[0]; } catch(e){}
 
-                let newRow = '<tr><td><p>' + newIndex + '</p></td><td>' + name + '</td><td data-aws="' + aws + '">' + dateString + '</td><td><input type="checkbox" class="value filled-in is-active"' + isChecked + '><span></span></td></tr>';
+                // Division-Rohwert als data-Attribut, übersetzter Text als Anzeige
+                let divisionLabel = getDivisionLabel(division);
+
+                let newRow = '<tr>'
+                    + '<td><p>' + newIndex + '</p></td>'
+                    + '<td>' + name + '</td>'
+                    + '<td data-division="' + division + '">' + divisionLabel + '</td>'
+                    + '<td data-aws="' + aws + '">' + dateString + '</td>'
+                    + '<td><input type="checkbox" class="value filled-in is-active"' + isChecked + '><span></span></td>'
+                    + '</tr>';
 
                 $('#devices').append(newRow);
 
-                $('#devices > tr').eq(countRows).find('td').eq(3).find('input').on('change', () => onChange()).on('keyup', () => onChange());
+                // Checkbox ist jetzt in Spalte 4 (neue Division-Spalte verschiebt um 1)
+                $('#devices > tr').eq(countRows).find('td').eq(4).find('input').on('change', () => onChange()).on('keyup', () => onChange());
 
                 $("#devices").parent("table").find('input[type="checkbox"]+span').off('click').on('click', function () {
                     var $input = $(this).prev();
@@ -160,6 +207,7 @@
                 M && M.updateTextFields();
                 onChange();
             }
+            // --- ENDE ÄNDERUNG ---
 
             //find device by name
             function findDeviceInRows(name){
@@ -186,14 +234,11 @@
             }
 
             onChange(false);
-            // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
             if (M) M.updateTextFields();
-
         }
 
         // This will be called by the admin adapter when the user presses the save button
         function save(callback) {
-            // example: select elements with class=value and build settings object
             var obj = {};
             $('.value').each(function () {
                 var $this = $(this);
@@ -208,14 +253,26 @@
             let arrDevices = [];
             if (countDevices > 0) {
                 for(let i = 0; i < countDevices; i++){
-                    let name = $('#devices > tr').eq(i).find('td').eq(1).text();
-                    let aws = $('#devices > tr').eq(i).find('td').eq(2).data("aws");
-                    let active  = ($('#devices > tr').eq(i).find('td').eq(3).find('input:checked').length > 0);
-                    let json = {name: name, aws: aws, active: active};
+                    let name     = $('#devices > tr').eq(i).find('td').eq(1).text();
+                    // --- ÄNDERUNG: division lesen, Spaltenindizes um 1 erhöht ---
+                    // ALTCODE:
+                    // let aws    = $('#devices > tr').eq(i).find('td').eq(2).data("aws");
+                    // let active = ($('#devices > tr').eq(i).find('td').eq(3).find('input:checked').length > 0);
+                    // let json   = {name: name, aws: aws, active: active};
+                    // NEUCODE:
+                    let division = $('#devices > tr').eq(i).find('td').eq(2).data("division");
+                    let aws      = $('#devices > tr').eq(i).find('td').eq(3).data("aws");
+                    let active   = ($('#devices > tr').eq(i).find('td').eq(4).find('input:checked').length > 0);
+                    let json     = {name: name, division: division, aws: aws, active: active};
+                    // --- ENDE ÄNDERUNG ---
                     arrDevices.push(json);
                 }
             } else if (!countDevices) {
-                let json = {name: '', aws: '', active: ''};
+                // --- ÄNDERUNG: division im leeren Fallback ergänzt ---
+                // ALTCODE: let json = {name: '', aws: '', active: ''};
+                // NEUCODE:
+                let json = {name: '', division: '', aws: '', active: ''};
+                // --- ENDE ÄNDERUNG ---
                 arrDevices.push(json);
             }
 
@@ -300,6 +357,11 @@
                         <tr>
                             <th class="translate" id="index"></th>
                             <th class="translate" id="deviceName">device name</th>
+                            <!-- ÄNDERUNG: neue Spalte Zählertyp, Text "meter type" wird via words.js übersetzt -->
+                            <!-- ALTCODE: (Spalte nicht vorhanden) -->
+                            <!-- NEUCODE: -->
+                            <th class="translate" id="deviceDivision">meter type</th>
+                            <!-- ENDE ÄNDERUNG -->
                             <th class="translate" id="deviceAWS">associated since</th>
                             <th class="translate" id="deviceActive">active</th>
                         </tr>
