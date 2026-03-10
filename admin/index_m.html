@@ -21,22 +21,24 @@
         // --- ÄNDERUNG: Hilfsfunktion zur Anzeige des Zählertyps anhand Division-Wert ---
         // ALTCODE: (nicht vorhanden)
         // NEUCODE:
-        // Schlüssel aus divisionKeyMap werden in words.js übersetzt,
-        // translateWord() aus translate.js liest die aktuelle ioBroker-Sprache.
+        // Übersetzungen direkt eingebaut, keine Abhängigkeit von translateWord().
+        // Andere Sprachen fallen auf Englisch zurück.
         function getDivisionLabel(division) {
-            var divisionKeyMap = {
-                '-1': 'division no type',
-                '0':  'division electricity',
-                '1':  'division cold water',
-                '2':  'division hot water',
-                '3':  'division heat',
-                '4':  'division gas',
-                '5':  'division cold and hot water'
+            var lang = document.documentElement.lang || 'en';
+
+            var divisionMap = {
+                '-1': { "en": "no type",                  "de": "Kein Typ" },
+                '0':  { "en": "electricity meter",        "de": "Stromzähler" },
+                '1':  { "en": "cold water meter",         "de": "Kaltwasserzähler" },
+                '2':  { "en": "hot water meter",          "de": "Warmwasserzähler" },
+                '3':  { "en": "heat meter",               "de": "Wärmezähler" },
+                '4':  { "en": "gas meter",                "de": "Gaszähler" },
+                '5':  { "en": "cold and hot water meter", "de": "Kalt- und Warmwasserzähler" }
             };
+
             var key = String(division);
-            var dictKey = divisionKeyMap.hasOwnProperty(key) ? divisionKeyMap[key] : null;
-            if (!dictKey) return 'Unknown (' + division + ')';
-            return translateWord(dictKey);
+            if (!divisionMap.hasOwnProperty(key)) return 'Unknown (' + division + ')';
+            return divisionMap[key][lang] || divisionMap[key]['en'];
         }
         // --- ENDE ÄNDERUNG ---
 
@@ -65,9 +67,11 @@
                 var $key = $(this);
                 var id = $key.attr('id');
                 if ($key.attr('type') === 'checkbox') {
+                    // do not call onChange direct, because onChange could expect some arguments
                     $key.prop('checked', settings[id])
                         .on('change', () => onChange());
                 } else {
+                    // do not call onChange direct, because onChange could expect some arguments
                     $key.val(settings[id])
                         .on('change', () => onChange())
                         .on('keyup', () => onChange());
@@ -165,9 +169,15 @@
             // --- ÄNDERUNG: addDeviceRow um Parameter 'division' erweitert ---
             // ALTCODE:
             // function addDeviceRow(onChange, name, aws, active){
-            //     ...
-            //     let newRow = '<tr>...<td data-aws="' + aws + '">' + dateString + '</td><td><input...></td></tr>';
-            //     $('#devices > tr').eq(countRows).find('td').eq(3).find('input').on('change'...);
+            //     if(findDeviceInRows(name)) return;
+            //     let countRows = $('#devices > tr').length;
+            //     let newIndex = countRows + 1;
+            //     let isChecked = (active)?' checked="checked"':"";
+            //     let dateString = "";
+            //     try { dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().split('T')[0]; } catch(e){}
+            //     let newRow = '<tr><td><p>' + newIndex + '</p></td><td>' + name + '</td><td data-aws="' + aws + '">' + dateString + '</td><td><input type="checkbox" class="value filled-in is-active"' + isChecked + '><span></span></td></tr>';
+            //     $('#devices').append(newRow);
+            //     $('#devices > tr').eq(countRows).find('td').eq(3).find('input').on('change', () => onChange()).on('keyup', () => onChange());
             // }
             // NEUCODE:
             function addDeviceRow(onChange, name, division, aws, active){
@@ -180,7 +190,7 @@
                 let dateString = "";
                 try { dateString = new Date((parseInt(aws) || 0) * 1000).toISOString().split('T')[0]; } catch(e){}
 
-                // Division-Rohwert als data-Attribut, übersetzter Text als Anzeige
+                // Division-Rohwert als data-Attribut speichern, übersetzter Text als Anzeige
                 let divisionLabel = getDivisionLabel(division);
 
                 let newRow = '<tr>'
@@ -194,6 +204,7 @@
                 $('#devices').append(newRow);
 
                 // Checkbox ist jetzt in Spalte 4 (neue Division-Spalte verschiebt um 1)
+                // ALTCODE: $('#devices > tr').eq(countRows).find('td').eq(3).find('input')...
                 $('#devices > tr').eq(countRows).find('td').eq(4).find('input').on('change', () => onChange()).on('keyup', () => onChange());
 
                 $("#devices").parent("table").find('input[type="checkbox"]+span').off('click').on('click', function () {
@@ -234,11 +245,14 @@
             }
 
             onChange(false);
+            // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
             if (M) M.updateTextFields();
+
         }
 
         // This will be called by the admin adapter when the user presses the save button
         function save(callback) {
+            // example: select elements with class=value and build settings object
             var obj = {};
             $('.value').each(function () {
                 var $this = $(this);
