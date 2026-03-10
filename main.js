@@ -70,7 +70,7 @@ class Powerfox2 extends utils.Adapter {
         const auth = 'Basic ' + Buffer.from(this.config.email + ':' + this.config.password).toString('base64');
         const apiClient = axios.create({
             baseURL: 'https://backend.powerfox.energy/api/2.0/my/',
-            timeout: 10000,
+            timeout: 15000,
             headers: { 'Authorization': auth }
         });
         // --- ENDE ÄNDERUNG ---
@@ -207,12 +207,12 @@ class Powerfox2 extends utils.Adapter {
                         if (error.response.status === 401) {
                             this.log.error('Error ' + error.response.status + ': Unauthorized');
                         } else if (error.response.status === 429) {
-                            this.log.error('Error ' + error.response.status + ': Too many requests');
+                            this.log.warn('Error ' + error.response.status + ': Too many requests');
                         } else {
                             this.log.error('error.response.status: ' + error.response.status);
                         }
                     } else if (error.code === 'ECONNABORTED') {
-                        this.log.error('Request timeout for device: ' + device.name);
+                        this.log.warn('Request timeout for device: ' + device.name);
                     }
                 }
                 // --- ENDE ÄNDERUNG ---
