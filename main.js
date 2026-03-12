@@ -125,10 +125,7 @@ class Powerfox2 extends utils.Adapter {
 
                 const path = 'devices.' + createVarName(device.name);
 
-                this.log.debug('device url:' + curDataUrl);
-                this.log.debug('device name:' + device.name);
-                this.log.debug('device active:' + device.active);
-                this.log.debug('device aws:' + device.aws);
+
 
                 // --- ÄNDERUNG [WICHTIG #1]: await + .then/.catch durch try/catch ersetzen ---
                 // ALTCODE: (siehe vorherige Version)
@@ -136,7 +133,6 @@ class Powerfox2 extends utils.Adapter {
                 try {
                     // --- ÄNDERUNG [DEBUG]: Axios-Request mit URL, Timeout und Dauer loggen ---
                     this.log.debug('API request: GET ' + this.apiClient.defaults.baseURL + curDataUrl);
-                    this.log.debug('API request timeout: ' + this.apiClient.defaults.timeout + 'ms');
                     const requestStart = Date.now();
                     // --- ENDE ÄNDERUNG ---
 
@@ -177,8 +173,7 @@ class Powerfox2 extends utils.Adapter {
                         } else {
                             consumption = data.Watt;
                         }
-                        this.log.debug('feedIn: ' + feedIn);
-                        this.log.debug('consumption: ' + consumption);
+                        this.log.debug('consumption: ' + consumption + 'W | feedIn: ' + feedIn + 'W');
 
                         // ALTCODE (number):
                         // const timestamp = (parseInt(data.Timestamp) || 0) * 1000;
