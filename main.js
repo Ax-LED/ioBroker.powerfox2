@@ -134,13 +134,22 @@ class Powerfox2 extends utils.Adapter {
                 // ALTCODE: (siehe vorherige Version)
                 // NEUCODE:
                 try {
+                    // --- ÄNDERUNG [DEBUG]: Axios-Request mit URL, Timeout und Dauer loggen ---
+                    this.log.debug('API request: GET ' + this.apiClient.defaults.baseURL + curDataUrl);
+                    this.log.debug('API request timeout: ' + this.apiClient.defaults.timeout + 'ms');
+                    const requestStart = Date.now();
+                    // --- ENDE ÄNDERUNG ---
+
                     const result = await this.apiClient.get(curDataUrl);
 
-                    this.log.debug('result status:' + JSON.stringify(result.status));
+                    // --- ÄNDERUNG [DEBUG]: Response-Status und Dauer loggen ---
+                    const requestDuration = ((Date.now() - requestStart) / 1000).toFixed(3);
+                    this.log.debug('API response: ' + result.status + ' in ' + requestDuration + 's');
+                    // --- ENDE ÄNDERUNG ---
 
                     if (result.status === 200) {
                         const data = result.data;
-                        this.log.debug('received data: ' + JSON.stringify(data));
+                        this.log.debug('API response data: ' + JSON.stringify(data));
 
                         /**{
 						"Outdated":false,
