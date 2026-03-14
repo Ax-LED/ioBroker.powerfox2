@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "powerfox2",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "news": {
+      "0.0.15": {
+        "en": "daemon mode with day/night query interval",
+        "de": "Daemon-Modus mit Tag/Nacht-Abfrageintervall",
+        "ru": "режим демона с дневным/ночным интервалом",
+        "pt": "modo daemon com intervalo dia/noite",
+        "nl": "daemon-modus met dag/nacht interval",
+        "fr": "mode daemon avec intervalle jour/nuit",
+        "it": "modalità daemon con intervallo giorno/notte",
+        "es": "modo daemon con intervalo día/noche",
+        "pl": "tryb demona z interwałem dzień/noc",
+        "uk": "режим демона з інтервалом день/ніч",
+        "zh-cn": "守护进程模式，日夜查询间隔"
+      },
       "0.0.14": {
         "en": "further code optimizations",
         "de": "weitere codeoptimierungen",
@@ -135,8 +148,7 @@
     "readme": "https://github.com/ax-led/ioBroker.powerfox2/blob/main/README.md",
     "loglevel": "info",
     "tier": 2,
-    "mode": "schedule",
-    "schedule": "* * * * *",
+    "mode": "daemon",
     "type": "energy",
     "compact": true,
     "connectionType": "cloud",
@@ -164,6 +176,10 @@
     "username": "",
     "password": "",
     "email": "",
+    "dayInterval": 1,
+    "nightInterval": 5,
+    "nightStart": 22,
+    "nightEnd": 6,
     "devices": []
   },
   "objects": [],
