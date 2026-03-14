@@ -16,16 +16,18 @@
 This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/) and makes it usable in iobroker.
 
 ## Changelog
-
-### 0.0.15 (2026-03-14)
-- changed from schedule to deamon
-- added configurable interval
-- added night time with separately configurable interval
-- (iobroker-bot) Adapter requires node.js >= 20 now.
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### 0.0.15 (2026-03-14)
+- changed from schedule to deamon
+- added configurable interval
+- added night time with separately configurable interval
+- Added "Counter Type" as a column in the settings
+- Code optimizations
+- (iobroker-bot) Adapter requires node.js >= 20 now.
+
 ### 0.0.14 (2023-11-19)
 - further code optimizations
 
