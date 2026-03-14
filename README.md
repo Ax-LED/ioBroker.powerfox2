@@ -22,9 +22,9 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 -->
 ### 0.0.15 (2026-03-14)
 - changed from schedule to deamon
+- added "Counter Type" as a column in the settings
 - added configurable interval
 - added night time with separately configurable interval
-- Added "Counter Type" as a column in the settings
 - Code optimizations
 - (iobroker-bot) Adapter requires node.js >= 20 now.
 
