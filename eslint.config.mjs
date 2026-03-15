@@ -3,13 +3,14 @@ import config from '@iobroker/eslint-config';
 export default [
     ...config,
     {
-        languageOptions: {
-            globals: {
-                require: 'readonly',
-            },
-        },
+        ignores: [
+            'admin/**',        // NEU - admin Ordner ignorieren
+            'test/**',         // NEU - test Ordner ignorieren
+            '*.d.ts',          // NEU - TypeScript Definition Files ignorieren
+        ],
+    },
+    {
         rules: {
-            // Deine bisherigen Regeln übernehmen:
             'indent': ['error', 4, { SwitchCase: 1 }],
             'no-console': 'off',
             'no-trailing-spaces': 'error',
