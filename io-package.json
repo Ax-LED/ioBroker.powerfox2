@@ -52,6 +52,7 @@
         "it": "codice ottimizzato sui suggerimenti di Apollon77\nvalori di energia elettrica notturna/non di punta aggiunti",
         "es": "código optimizado en las sugerencias de Apollon77\nvalores de electricidad añadidos durante la noche/fuera de las horas pico",
         "pl": "zoptymalizowany kod pod sugestiami Apollon77\ndodane wartości energii elektrycznej w godzinach nocnych / poza szczytem",
+        "uk": "оптимізований код за пропозиціями Apollon77\nдодані нічні/позапікові значення електроенергії",
         "zh-cn": "Apollon77 建议的优化代码\n增加夜间/非高峰用电值"
       },
       "0.0.11": {
@@ -64,6 +65,7 @@
         "it": "cambiare anno di patente",
         "es": "cambiar año de licencia",
         "pl": "zmień rok licencji",
+        "uk": "змінити рік ліцензії",
         "zh-cn": "更改执照年份"
       },
       "0.0.10": {
@@ -76,6 +78,7 @@
         "it": "cambia anno di copyright",
         "es": "cambiar año de derechos de autor",
         "pl": "zmień rok praw autorskich",
+        "uk": "змінити рік авторського права",
         "zh-cn": "更改版权年份"
       },
       "0.0.9": {
@@ -88,19 +91,8 @@
         "it": "codice ottimizzato sui suggerimenti di Apollon77",
         "es": "código optimizado en sugerencias de Apollon77",
         "pl": "zoptymalizowany kod pod sugestiami Apollon77",
+        "uk": "оптимізований код за пропозиціями Apollon77",
         "zh-cn": "Apollon77 建议的优化代码"
-      },
-      "0.0.8": {
-        "en": "cleaned code\ntranslated log and debug messages",
-        "de": "gereinigter Code\nübersetzte Log- und Debug-Meldungen",
-        "ru": "очищенный код\nпереведенные сообщения журнала и отладки",
-        "pt": "código limpo\nlog traduzido e mensagens de depuração",
-        "nl": "opgeschoonde code\nvertaalde log- en foutopsporingsberichten",
-        "fr": "code nettoyé\nmessages de journal et de débogage traduits",
-        "it": "codice pulito\nmessaggi di log e debug tradotti",
-        "es": "código limpio\nmensajes de depuración y registro traducidos",
-        "pl": "oczyszczony kod\nprzetłumaczone komunikaty dziennika i debugowania",
-        "zh-cn": "清理过的代码\n翻译的日志和调试消息"
       }
     },
     "titleLang": {
@@ -113,6 +105,7 @@
       "it": "powerfox2",
       "es": "powerfox2",
       "pl": "lisek2",
+      "uk": "powerfox2",
       "zh-cn": "电狐2"
     },
     "desc": {
@@ -125,6 +118,7 @@
       "it": "powerfox2 fornisce dati sull'energia",
       "es": "powerfox2 proporciona datos de energía",
       "pl": "powerfox2 dostarcza dane dotyczące energii",
+      "uk": "powerfox2 надає дані про енергію",
       "zh-cn": "powerfox提供能源数据"
     },
     "authors": [
@@ -153,16 +147,18 @@
     "compact": true,
     "connectionType": "cloud",
     "dataSource": "poll",
-    "materialize": true,
+    "adminUI": {
+      "config": "materialize"
+    },
     "supportCustoms": false,
     "dependencies": [
       {
-        "js-controller": ">=3.0.0"
+        "js-controller": ">=6.0.11"
       }
     ],
     "globalDependencies": [
       {
-        "admin": ">=4.0.9"
+        "admin": ">=7.6.20"
       }
     ]
   },
