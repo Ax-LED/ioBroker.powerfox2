@@ -10,7 +10,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios").default;
 
 // Load your modules here, e.g.:
-// const fs = require("fs");
+// const fs = require("node:fs");
 
 class Powerfox2 extends utils.Adapter {
   /**
