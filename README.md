@@ -20,6 +20,9 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (copilot) Adapter requires node.js >= 22 now
+
 ### 0.0.15 (2026-03-14)
 - changed from schedule to deamon
 - added "Counter Type" as a column in the settings
