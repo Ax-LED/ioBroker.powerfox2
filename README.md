@@ -73,6 +73,8 @@ This adapter fetches data from the powerfox cloud (https://www.powerfox.energy/)
 ### 0.0.1 (2021-11-08)
 * (Ax-LED) initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 MIT License
 
